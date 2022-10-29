@@ -31,7 +31,7 @@ export default {
       items: [],
     });
 
-    axios.get("/api/items").then(({ data }) => {
+    axios.get("/api/places").then(({ data }) => {
       // console.log('여기 res는 :', res)
       state.items = data;
     });

@@ -35,7 +35,7 @@ public class AccountController {
 		
 		Member member = memberRepository.findByEmailAndPassword(param.get("email"), param.get("password"));
 		
-		// member값이 null이 아니면, id값을 토큰화해서 토큰을 쿠키에 넣고 응답값에 추가를 하고, 리턴해준다.
+		// member값이 null이 아니면, id값을 토큰화해서 토큰을 쿠키에 넣고 응답값에 추가를 하고, 리턴해준다.		
 		if(member != null) {
 			// JwtService jwtService = new JwtServiceImpl();
 			int id = member.getId();

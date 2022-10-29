@@ -48,6 +48,9 @@ import store from "@/store";
 import router from "@/router";
 
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: "Login",
+
   setup() {
     const state = reactive({
       form: {

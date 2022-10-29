@@ -1,16 +1,16 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Cart from '../views/Cart.vue'
 
-const routes: Array<RouteRecordRaw> = [
-  {path: '/', name: 'Home', component: Home},
-  {path: '/login', name: 'Login', component: Login},
-  {path: '/cart', name: 'Cart', component: Cart},
+const routes = [
+  {path: '/', component: Home},
+  {path: '/login', component: Login},
+  {path: '/cart', component: Cart},
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(),
   routes: routes
 })
 

@@ -10,7 +10,7 @@ import lombok.Getter;
 
 @Getter
 @Entity
-@Table(name = "MEMBER")
+@Table(name = "member")
 public class Member {
 	
 	@Id
@@ -22,5 +22,11 @@ public class Member {
 	
 	@Column(length = 100, nullable = false)
 	private String password;
+	
+	@Column(length = 100, nullable = true)
+	private String role;
+	
+	@Column(length = 100, nullable = true)
+	private String memberName;
 
 }

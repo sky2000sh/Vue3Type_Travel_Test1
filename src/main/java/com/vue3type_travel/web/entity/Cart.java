@@ -7,26 +7,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Entity
-@Table(name = "places")
-public class Place {
-	
+@Table(name = "carts")
+public class Cart {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)	
 	private int id;
 	
-	@Column(length = 50, nullable = false)
-	private String name;
-	
-	@Column(length = 100)
-	private String imgPath;
+	@Column
+	private int memberId;
 	
 	@Column
-	private int price;
+	private int placeId;
 	
-	@Column
-	private int discountPer;
-
 }

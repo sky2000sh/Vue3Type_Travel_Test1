@@ -42,9 +42,9 @@ export default {
   },
 
   setup() {
-    const addToCart = (itemId: number) => {
-      axios.post(`/api/cart/items/${itemId}`).then(() => {
-        console.log("itemId의 성공");
+    const addToCart = (placeId: number) => {
+      axios.post(`/api/cart/places/${placeId}`).then(() => {
+        console.log("placeId의 성공");
       });
     };
 

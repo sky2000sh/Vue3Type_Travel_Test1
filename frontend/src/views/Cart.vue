@@ -25,20 +25,32 @@ import axios from "axios";
 import lib from "@/variousScript/lib";
 
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: "Cart",
+
+  data() {
+    return {
+      items: Object,
+      imgPath: String,
+    };
+  },
+
   setup() {
     const state = reactive({
-      items: [],
+      items: {
+        type: Object,
+      },
     });
 
     const load = () => {
-      axios.get("/api/cart/items").then(({ data }) => {
+      axios.get("/api/cart/places").then(({ data }) => {
         console.log("여기가 Cart.vue 의 data :", data);
         state.items = data;
       });
     };
 
-    const remove = (itemId) => {
-      axios.delete(`/api/cart/items/${itemId}`).then(() => {
+    const remove = (placeId) => {
+      axios.delete(`/api/cart/places/${placeId}`).then(() => {
         load();
       });
     };
