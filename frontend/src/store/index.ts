@@ -22,7 +22,8 @@ const store = createStore({
         }
     },
     mutations: {
-        setAccount(state: any, payload) {
+        account: Number,
+        setAccount(state, payload) {
             state.account.id = payload
         }
     }

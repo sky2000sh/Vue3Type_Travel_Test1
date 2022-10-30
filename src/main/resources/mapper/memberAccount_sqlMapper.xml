@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.vue3type_travel.web.dao.MemberAccountDao">
+
+	<insert id="memberSignUp" parameterType="com.vue3type_travel.web.entity.Member">
+		INSERT INTO member(id, email, password, role, member_name)
+		VALUES (NEXTVAL(TravelTest.memberSeq), #{email}, #{password}, null, #{memberName})
+	</insert>
+	
+	
+</mapper>

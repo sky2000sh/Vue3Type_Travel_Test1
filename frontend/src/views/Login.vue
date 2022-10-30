@@ -36,6 +36,14 @@
     <button class="w-100 btn btn-lg btn-primary" @click="submit()">
       Sign in
     </button>
+    &nbsp;
+    <router-link
+      to="/join"
+      class="w-100 btn btn-lg btn-primary"
+      style="background-color: pink"
+    >
+      Sign up
+    </router-link>
     <p class="mt-5 mb-3 text-muted">&copy; 2017–2022</p>
     <!-- </form> -->
   </div>
