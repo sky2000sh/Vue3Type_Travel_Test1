@@ -42,7 +42,22 @@ public class AccountController {
 	@PostMapping("/api/account/login")
 	public ResponseEntity<?> login(@RequestBody Map<String, String> param, HttpServletResponse res) {
 		
+		System.out.println("param : " + param);
+		
+		System.out.println("res : " + res);
+		
 		Member member = memberRepository.findByEmailAndPassword(param.get("email"), param.get("password"));
+		
+		// 여기가 null인 이유를 동영상 보면서 찾아보기
+		//
+		//
+		//
+		//
+		//		
+		System.out.println("member : " + memberRepository.findByEmailAndPassword(param.get("email"), param.get("password")));
+//		Member member = new Member();
+//		member.setEmail(param.get("email"));
+//		member.setPassword(param.get("password"));
 		
 		// member값이 null이 아니면, id값을 토큰화해서 토큰을 쿠키에 넣고 응답값에 추가를 하고, 리턴해준다.		
 		if(member != null) {
@@ -116,7 +131,9 @@ public class AccountController {
 		//memberRepository.save(member);
 		memberAccountDao.memberSignUp(member);
 		
-		return new ResponseEntity<>(HttpStatus.OK);
+		String memberName = member.getMemberName();
+		
+		return new ResponseEntity<>(memberName, HttpStatus.OK);
 	}
 
 }

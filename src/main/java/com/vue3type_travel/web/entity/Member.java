@@ -20,17 +20,15 @@ import lombok.Setter;
 
 //ORM - Object Relation Mapping
 
-@Builder
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "member")
 public class Member {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)	
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
 	@Column(length = 50, nullable = false, unique = true)

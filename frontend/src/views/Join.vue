@@ -13,7 +13,7 @@
         <span class="details">Email</span>
         <input
           type="text"
-          v-model="state.member.email"
+          v-model="member.email"
           placeholder="Enter your email"
           required
         />
@@ -26,7 +26,7 @@
         <span class="details">Membername</span>
         <input
           type="text"
-          v-model="state.member.memberName"
+          v-model="member.memberName"
           placeholder="Enter your membername"
           required
         />
@@ -35,15 +35,20 @@
         <span class="details">Password</span>
         <input
           type="password"
-          v-model="state.member.password"
+          v-model="member.password"
           placeholder="Enter your password"
           required
         />
       </div>
-      <!-- <div class="form-floating">
+      <div class="form-floating">
         <span class="details">Confirm Password</span>
-        <input type="text" placeholder="Confirm your password" required />
-      </div> -->
+        <input
+          type="password"
+          v-model="member.passwordConfirm"
+          placeholder="Confirm your password"
+          required
+        />
+      </div>
     </div>
     <!-- <div class="gender-details">
       <input type="radio" name="gender" id="dot-1" />
@@ -65,9 +70,8 @@
         </label>
       </div>
     </div> -->
-    <button class="w-100 btn btn-lg btn-primary" @click="submit()">
-      <!-- @click="submit()" -->
-      Sign up
+    <button class="w-100 btn btn-lg btn-primary" @click="onClickSave">
+      가입하기
     </button>
     <!-- </form> -->
     <!-- </div> -->
@@ -76,62 +80,54 @@
 
 <script>
 import axios from "axios";
-import { reactive } from "@vue/reactivity";
+import router from "@/router";
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Join",
 
-  // data() {
-  //   return {
-  //     // member: [{ email: "" }, { password: "" }, { memberName: "" }],
-  //     // email: String,
-  //     // password: String,
-  //     // memberName: String,
-
-  //     member: {
-  //       id: "",
-  //       email: "",
-  //       password: "",
-  //       memberName: "",
-  //       //birthDate: undefined,
-  //       //gender: null,
-  //       //tel: undefined,
-  //       //roleName: 'USER'
-  //     },
-  //   };
-  // },
-
-  // methods: {
-  //   fnRowDelete: () => {
-  //     this.member;
-  //     console.log("member는? :", this.member);
-  //     // axios.post("/api/joinProc", member).then(() => {
-  //     //   console.log("여기는 조인의 진행상황 로그");
-  //     // });
-  //   },
-
-  setup() {
-    const state = reactive({
+  data() {
+    return {
       member: {
-        id: "",
         email: "",
         password: "",
+        passwordConfirm: "",
         memberName: "",
+        //birthDate: undefined,
+        //gender: null,
+        //tel: undefined,
+        //roleName: 'USER'
       },
-    });
-
-    const submit = () => {
-      axios
-        .post("/api/joinProc", state.member)
-        .then(() => {
-          console.log("여기가 조인 성공진행?");
-        })
-        .catch(() => {
-          window.alert("로그인 정보가 존재하지 않습니다.");
-        });
     };
+  },
 
-    return { state, submit };
+  methods: {
+    onClickSave() {
+      //console.log("this.member? :", this.member);
+
+      if (!this.fnValidateSave()) return;
+      const param = this.member;
+
+      console.log("const param :", param);
+      axios.post("/api/joinProc", param).then((result) => {
+        console.log("여기는 조인의 진행상황 로그 : ", result.data);
+        window.alert(
+          result.data + "님, 가입을 축하합니다. 새롭게 로그인하세요."
+        );
+        router.push({ path: "/" });
+      });
+    },
+
+    /***************** Validation Function *******************/
+    fnValidateSave() {
+      let result = true;
+
+      if (this.member.passwordConfirm !== this.member.password) {
+        window.alert("비밀번호를 재확인하세요.");
+        return false;
+      }
+
+      return result;
+    },
   },
 };
 </script>

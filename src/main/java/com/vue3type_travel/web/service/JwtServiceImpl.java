@@ -78,6 +78,8 @@ public class JwtServiceImpl implements JwtService {
 	public int getId(String token) {
 		Claims claims = this.getClaims(token);
 		
+		System.out.println("여기 claims : " + claims);
+		
 		if(claims != null) {
 			return Integer.parseInt(claims.get("id").toString());
 		}
