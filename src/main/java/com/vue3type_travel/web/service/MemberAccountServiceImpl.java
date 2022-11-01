@@ -2,7 +2,6 @@ package com.vue3type_travel.web.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 
 import com.vue3type_travel.web.dao.MemberAccountDaoImpl;
 import com.vue3type_travel.web.entity.Member;

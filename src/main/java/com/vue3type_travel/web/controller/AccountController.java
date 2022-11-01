@@ -41,23 +41,22 @@ public class AccountController {
 	// 아래 post로 데이터를 요청받는데, 인자값을 param으로 받고 그 안에 email, password를 던져서 id 값을 리턴해준다.
 	@PostMapping("/api/account/login")
 	public ResponseEntity<?> login(@RequestBody Map<String, String> param, HttpServletResponse res) {
+
+		Member member = new Member();
 		
-		System.out.println("param : " + param);
+		// 암호화 된 비밀번호를 email를 통해 DB에서 가져오기
+		String password = memberAccountDao.getMemberEmailFromPwd(param.get("email"));
+		// 받아온 password 값을 matches를 이용해 입력된 password와 비교
+		boolean result =  bCryptPasswordEncoder.matches(param.get("password"), password);
 		
-		System.out.println("res : " + res);
-		
-		Member member = memberRepository.findByEmailAndPassword(param.get("email"), param.get("password"));
-		
-		// 여기가 null인 이유를 동영상 보면서 찾아보기
-		//
-		//
-		//
-		//
-		//		
-		System.out.println("member : " + memberRepository.findByEmailAndPassword(param.get("email"), param.get("password")));
-//		Member member = new Member();
-//		member.setEmail(param.get("email"));
-//		member.setPassword(param.get("password"));
+		if(result) {
+			// findByEmailAndPassword에 암호화 된 password를 넣어주어 총 param.email과 그 password를 담아준다
+			member = memberRepository.findByEmailAndPassword(param.get("email"), password);
+		}
+		// result 값이 아니라면 email / password값을 프론트에 내놓아 프론트에서 입력한 정보가 없다고 알림창주기
+//		else {
+//			return param.get("email");
+//		}
 		
 		// member값이 null이 아니면, id값을 토큰화해서 토큰을 쿠키에 넣고 응답값에 추가를 하고, 리턴해준다.		
 		if(member != null) {
@@ -104,26 +103,16 @@ public class AccountController {
 	
 	@PostMapping("/api/joinProc")
 	public ResponseEntity<?> joinProc(@RequestBody Map<String, String> param, HttpServletResponse res) {
-//	public String joinProc(Member member) {
+
 		Member member = new Member();
-		
-		System.out.println("회원가입 진행 : " + member);
-		
-		System.out.println("회원가입 email 진행1 : " + param.get("email"));
-		System.out.println("회원가입 password 진행2 : " + param.get("password"));
-		System.out.println("회원가입 memberName 진행3 : " + param.get("memberName"));
-		
-		
+				
 		// 이메일 저장
 		member.setEmail(param.get("email"));
 		
 		// 비밀번호 저장
 		String rawPassword = param.get("password");
-		//String rawPassword = member.getPassword();
 		String encPassword = bCryptPasswordEncoder.encode(rawPassword);
 		member.setPassword(encPassword);
-		
-		System.out.println("member.getPassword() : " + member.getPassword());
 		
 		// 유저 이름 저장
 		member.setMemberName(param.get("memberName"));

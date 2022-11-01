@@ -18,4 +18,10 @@ public class MemberAccountDaoImpl implements MemberAccountDao {
 		return sqlSession.insert("com.vue3type_travel.web.dao.MemberAccountDao.memberSignUp", vo);
 	}
 
+	@Override
+	public String getMemberEmailFromPwd(String emailToPwd) {
+		return sqlSession.selectOne("com.vue3type_travel.web.dao.MemberAccountDao.getMemberEmailFromPwd", emailToPwd);
+	}
+
+
 }
