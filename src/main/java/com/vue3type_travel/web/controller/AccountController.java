@@ -4,6 +4,8 @@ import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.vue3type_travel.web.dao.MemberAccountDao;
 import com.vue3type_travel.web.entity.Member;
+import com.vue3type_travel.web.entity.MemberInfo;
 import com.vue3type_travel.web.repository.MemberRepository;
 import com.vue3type_travel.web.service.JwtService;
 
@@ -101,10 +104,12 @@ public class AccountController {
 		return new ResponseEntity<>(null, HttpStatus.OK);		
 	}
 	
+	@Transactional
 	@PostMapping("/api/joinProc")
-	public ResponseEntity<?> joinProc(@RequestBody Map<String, String> param, HttpServletResponse res) {
+	public ResponseEntity<?> joinProc(@RequestBody Map<String, String> param, HttpServletResponse res) throws Exception {
 
 		Member member = new Member();
+		MemberInfo memberInfo= new MemberInfo();
 				
 		// 이메일 저장
 		member.setEmail(param.get("email"));
@@ -117,8 +122,17 @@ public class AccountController {
 		// 유저 이름 저장
 		member.setMemberName(param.get("memberName"));
 		
+		// 유저 정보 저장
+		memberInfo.setEmail(param.get("email"));
+		memberInfo.setPhone(param.get("phone"));
+		memberInfo.setBirth(param.get("birth"));		
+		memberInfo.setGender(param.get("gender"));
+		memberInfo.setAddress1(param.get("address1"));
+		memberInfo.setAddress2(param.get("address2"));
+		
 		//memberRepository.save(member);
 		memberAccountDao.memberSignUp(member);
+		memberAccountDao.memberInfoSignUp(memberInfo);
 		
 		String memberName = member.getMemberName();
 		
