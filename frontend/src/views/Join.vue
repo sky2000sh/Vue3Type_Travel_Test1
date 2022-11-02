@@ -155,7 +155,7 @@ export default {
           window.alert(
             result.data + "님, 가입을 축하합니다. 새롭게 로그인하세요."
           );
-          router.push({ path: "/" });
+          router.push({ path: "" });
         })
         .catch((error) => {
           window.alert(error);
