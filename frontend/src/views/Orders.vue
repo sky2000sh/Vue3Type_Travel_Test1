@@ -9,6 +9,7 @@
             <th>주소</th>
             <th>결제수단</th>
             <th>구입항목</th>
+            <th>결제시간</th>
           </tr>
         </thead>
 
@@ -18,12 +19,13 @@
             <td>{{ o.name }}</td>
             <td>{{ o.address }}</td>
             <td>{{ o.payment }}</td>
-            <!-- <td> {{ o.items}} </td> -->
-            <td>
-              <div v-for="(i, idx2) in o.items" :key="idx2">
+            <td>{{ o.places }}</td>
+            <td>{{ o.paymentDate }}</td>
+            <!-- <td>
+              <div v-for="(i, idx2) in o.places" :key="idx2">
                 {{ i.name }}
               </div>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>

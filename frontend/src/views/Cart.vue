@@ -2,6 +2,7 @@
   <div class="cart">
     <div class="container">
       <ul>
+        <!-- <li v-for="(i, idx) in state.items" :key="idx"> -->
         <li v-for="(i, idx) in state.items" :key="idx">
           <img :src="i.imgPath" />
           <span class="name"> {{ i.name }} </span>
@@ -10,7 +11,7 @@
               lib.getNumberFormatted(i.price - (i.price * i.discountPer) / 100)
             }}원
           </span>
-          <i class="fa fa-trash" @click="remove(i.id)"></i>
+          <!-- <i class="fa fa-trash" @click="remove(i.id)"></i> -->
         </li>
       </ul>
       <!-- <button class="btn btn-primary">구입하기</button> -->

@@ -3,7 +3,9 @@
     <span class="img" :style="{ backgroundImage: `url(${item.imgPath})` }" />
     <div class="card-body">
       <p class="card-text">
-        <span> {{ item.name }} &nbsp;</span>
+        <span>
+          <strong> {{ item.name }} &nbsp; </strong>
+        </span>
         <span class="discount badge bg-danger"> {{ item.discountPer }}% </span>
       </p>
       <div class="d-flex justify-content-between align-items-center">
@@ -29,6 +31,8 @@
 <script lang='ts'>
 import lib from "@/variousScript/lib";
 import axios from "axios";
+import { PropType } from "vue";
+import Item from "@/types/Item";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -36,8 +40,9 @@ export default {
 
   props: {
     item: {
-      type: Object,
+      //type: Object,
       required: true,
+      type: Array as PropType<Item[]>,
     },
   },
 
@@ -59,6 +64,10 @@ export default {
   height: 250px;
   background-size: cover;
   background-position: center;
+}
+
+.card .card-body .card-text {
+  font-size: 1.5em;
 }
 
 .card .card-body .price {

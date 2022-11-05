@@ -1,5 +1,6 @@
 package com.vue3type_travel.web.entity;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,5 +37,8 @@ public class Order {
 	
 	@Column(length = 500, nullable = false)
 	private String places;
+	
+	@Column(nullable = false)
+	private String paymentDate;
 
 }

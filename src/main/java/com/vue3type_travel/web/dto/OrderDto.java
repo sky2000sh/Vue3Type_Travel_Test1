@@ -14,5 +14,7 @@ public class OrderDto {
 	private String cardNumber;
 	
 	private String places;
+	
+	private String paymentDate;
 
 }

@@ -1,5 +1,7 @@
 package com.vue3type_travel.web.controller;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +66,10 @@ public class OrderController {
 		newOrder.setPayment(dto.getPayment());
 		newOrder.setCardNumber(dto.getCardNumber());
 		newOrder.setPlaces(dto.getPlaces());
+		
+		SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+		Date date = new Date(System.currentTimeMillis());		
+		newOrder.setPaymentDate(formatter.format(date));
 		
 		// 참조변수 orderRepository안에 새로운 결제를 위해 바구니에 저장
 		orderRepository.save(newOrder);
