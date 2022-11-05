@@ -78,7 +78,7 @@ export default {
             store.commit("setAccount", result.data);
             // sessionStorage.setItem()에 id와 id value값을 저장 및 보관해서 마치 세션이 살아있도록 해준다.
             sessionStorage.setItem("id", result.data);
-            router.push({ path: "/" });
+            router.push({ path: "" });
             window.alert("로그인 성공했습니다. 환영합니다!");
           }
         })
