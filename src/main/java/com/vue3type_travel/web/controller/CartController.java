@@ -62,7 +62,7 @@ public class CartController {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 		
-		int memberId = jwtService.getId(token);
+		int memberId = jwtService.getId(token);		
 		Cart cart = cartRepository.findByMemberIdAndPlaceId(memberId, placeId);
 		
 		// cart가 없을 때는 새로운 cart를 추가하는데, 아래 명령어로 memberId, itemId를 인자로 받아서 set으로 세팅해준다.

@@ -13,7 +13,7 @@
           <i class="fa fa-trash" @click="remove(i.id)"></i>
         </li>
       </ul>
-      <!-- <button class="btn btn-primary"> 구입하기 </button> -->
+      <!-- <button class="btn btn-primary">구입하기</button> -->
       <router-link to="/order" class="btn btn-primary"> 구입하기 </router-link>
     </div>
   </div>
