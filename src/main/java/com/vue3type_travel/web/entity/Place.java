@@ -28,5 +28,14 @@ public class Place {
 	
 	@Column
 	private int discountPer;
+	
+	@Column
+	private int adultDisPer;
+	
+	@Column
+	private int kidDisPer;
+	
+	@Column
+	private int babyDisPer;
 
 }
