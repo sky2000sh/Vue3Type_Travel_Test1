@@ -184,7 +184,7 @@ export default {
         return data;
       } else if (data !== Number(data)) {
         let data = 1;
-        alert("숫자만 입력가능합니다.");
+        alert("숫자만 입력가능합니다");
         return data;
       }
       console.log("increment data :", data);
