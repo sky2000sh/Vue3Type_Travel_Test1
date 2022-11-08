@@ -15,7 +15,7 @@
         <span class="num_count_group">
           <button
             class="btn_decrement down"
-            @click="decrement(cntNum.adultNum)"
+            @click="decrementAdult(cntNum.adultNum)"
           >
             -
           </button>
@@ -40,7 +40,10 @@
 
         <small> 아 동 </small>
         <span class="num_count_group">
-          <button class="btn_decrement down" @click="decrement(cntNum.kidNum)">
+          <button
+            class="btn_decrement down"
+            @click="decrementKid(cntNum.kidNum)"
+          >
             -
           </button>
           <span class="inpt_counter">
@@ -60,7 +63,10 @@
 
         <small> 유 아 </small>
         <span class="num_count_group">
-          <button class="btn_decrement down" @click="decrement(cntNum.babyNum)">
+          <button
+            class="btn_decrement down"
+            @click="decrementBaby(cntNum.babyNum)"
+          >
             -
           </button>
           <span class="inpt_counter">
@@ -84,6 +90,7 @@
       <p class="card-text"></p>
       <div class="d-flex justify-content-between align-items-center">
         <button class="btn btn-primary" @click="addToCart(item.id)">
+          <!-- @click="addToCart(item.id)" -->
           <i class="fa fa-shopping-cart" aria-hidden="true"></i>
         </button>
         <!-- <small class="price text-muted">
@@ -94,6 +101,9 @@
           <!-- item.price * item.adultDisPer => 가격의 성인 1인당 할인율 x 성인 수 -->
           <!-- {{ lib.getNumberFormatted(item.price * item.adultDisPer * cntNum.adultNum)}}원 -->
           {{ lib.getNumberFormatted(totalPricePerCnt) }}원
+          <!-- <button @click="updateParentValue">
+            클릭시 부모의 데이터 값이 증가합니다.
+          </button> -->
         </small>
         <!-- <small class="current text-muted">
           현재 &nbsp;
@@ -131,13 +141,14 @@ export default {
       cntNum: {
         totalNum: 0,
         adultName: "adultName",
-        adultNum: 0,
+        adultNum: 1,
         kidName: "kidName",
         kidNum: 0,
         babyName: "babyName",
         babyNum: 0,
       },
-      totalPricePerCnt: 0,
+      // totalPricePerCnt: 0,
+      totalPricePerCnt: this.item.price,
     };
   },
 
@@ -152,12 +163,17 @@ export default {
   },
 
   methods: {
-    decrement(data) {
+    decrementAdult(data) {
       data--;
 
       if (data <= 0) {
         let data = 1;
         alert("예약인원수는 최소 1명 이상입니다.");
+        return data;
+      }
+      if (data > 20) {
+        let data = 1;
+        alert("최대 20명까지 예약가능합니다.");
         return data;
       } else if (data !== Number(data)) {
         let data = 1;
@@ -166,19 +182,77 @@ export default {
       }
       console.log("decrement data :", data);
       this.cntNum.adultNum = data;
+      let adult = [];
+      adult.push(this.cntNum.adultNum);
+      adult.push(this.cntNum.adultName);
+
+      this.totalPrice(adult);
 
       return this.cntNum.adultNum;
+    },
+
+    decrementKid(data) {
+      data--;
+
+      if (data < 0) {
+        let data = 0;
+        alert("다시 지정해주세요.");
+        return data;
+      } else if (data > 20) {
+        let data = 1;
+        alert("최대 20명까지 예약가능합니다.");
+        return data;
+      } else if (data !== Number(data)) {
+        let data = 1;
+        alert("숫자만 입력가능합니다.");
+        return data;
+      }
+      console.log("decrement data :", data);
+      this.cntNum.kidNum = data;
+      let kid = [];
+      kid.push(this.cntNum.kidNum);
+      kid.push(this.cntNum.kidName);
+
+      this.totalPrice(kid);
+
+      return this.cntNum.kidNum;
+    },
+
+    decrementBaby(data) {
+      data--;
+
+      if (data < 0) {
+        let data = 0;
+        alert("다시 지정해주세요.");
+        return data;
+      } else if (data > 20) {
+        let data = 1;
+        alert("최대 20명까지 예약가능합니다.");
+        return data;
+      } else if (data !== Number(data)) {
+        let data = 1;
+        alert("숫자만 입력가능합니다.");
+        return data;
+      }
+      console.log("decrement data :", data);
+      this.cntNum.babyNum = data;
+      let baby = [];
+      baby.push(this.cntNum.babyNum);
+      baby.push(this.cntNum.babyName);
+
+      this.totalPrice(baby);
+
+      return this.cntNum.babyNum;
     },
 
     incrementAdult(data) {
       data++;
 
-      // if (data === 0) {
-      //   let data = 1;
-      //   alert("예약인원수를 입력해주세요.");
-      //   return data;
-      // }
-      if (data > 20) {
+      if (data <= 0) {
+        let data = 1;
+        alert("예약인원수는 최소 1명 이상입니다.");
+        return data;
+      } else if (data > 20) {
         let data = 1;
         alert("최대 20명까지 예약가능합니다.");
         return data;
@@ -193,7 +267,7 @@ export default {
       adult.push(this.cntNum.adultNum);
       adult.push(this.cntNum.adultName);
 
-      this.increment(adult);
+      this.totalPrice(adult);
 
       return this.cntNum.adultNum;
     },
@@ -201,9 +275,9 @@ export default {
     incrementKid(data) {
       data++;
 
-      if (data === 0) {
-        let data = 1;
-        alert("예약인원수를 입력해주세요.");
+      if (data < 0) {
+        let data = 0;
+        alert("다시 지정해주세요.");
         return data;
       } else if (data > 20) {
         let data = 1;
@@ -220,7 +294,7 @@ export default {
       kid.push(this.cntNum.kidNum);
       kid.push(this.cntNum.kidName);
 
-      this.increment(kid);
+      this.totalPrice(kid);
 
       return this.cntNum.kidNum;
     },
@@ -228,9 +302,9 @@ export default {
     incrementBaby(data) {
       data++;
 
-      if (data === 0) {
-        let data = 1;
-        alert("예약인원수를 입력해주세요.");
+      if (data < 0) {
+        let data = 0;
+        alert("다시 지정해주세요.");
         return data;
       } else if (data > 20) {
         let data = 1;
@@ -247,12 +321,12 @@ export default {
       baby.push(this.cntNum.babyNum);
       baby.push(this.cntNum.babyName);
 
-      this.increment(baby);
+      this.totalPrice(baby);
 
       return this.cntNum.babyNum;
     },
 
-    increment(data) {
+    totalPrice(data) {
       let getNum = data[0];
       let getName = data[1];
       // for (const [key, value] of Object.entries(this.cntNum)) {}
@@ -313,8 +387,15 @@ export default {
         totalAdultPricePerCnt + totalKidPricePerCnt + totalBabyPricePerCnt;
 
       // console.log("this.totalPricePerCnt :", this.totalPricePerCnt);
+      let params = this.totalPricePerCnt;
+      this.sendTotalPrice(params);
 
       return this.totalPricePerCnt;
+    },
+
+    sendTotalPrice(data) {
+      console.log("sendTotalPrice의 data :", data);
+      return data;
     },
   },
 };
