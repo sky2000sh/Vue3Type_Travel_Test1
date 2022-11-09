@@ -25,4 +25,7 @@ public class Cart {
 	@Column
 	private int placeId;
 	
+	@Column
+	private int totalPrice;
+	
 }

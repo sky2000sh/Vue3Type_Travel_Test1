@@ -11,10 +11,6 @@
               lib.getNumberFormatted(i.price - (i.price * i.discountPer) / 100)
             }}원
           </span>
-          <span class="price1">
-            <totalPrice v-on:childEvent="updateParentValue" />
-          </span>
-
           <i class="fa fa-trash" @click="remove(i.id)"></i>
         </li>
       </ul>
@@ -28,7 +24,6 @@
 import { reactive } from "vue";
 import axios from "axios";
 import lib from "@/variousScript/lib";
-// import totalPrice from "@/components/Card.vue";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -54,11 +49,6 @@ export default {
       axios.get("/api/cart/places").then(({ data }) => {
         console.log("여기가 Cart.vue 의 data :", data);
         state.items = data;
-        // console.log("여기가 Cart.vue 의 totalPrice :", totalPrice);
-        // console.log(
-        //   "여기가 Cart.vue 의 totalPrice.data.methods :",
-        //   totalPrice.methods.totalPrice.totalPricePerCnt
-        // );
       });
     };
 
@@ -73,12 +63,12 @@ export default {
     return { state, lib, remove };
   },
 
-  // methods: {
-  //   updateParentValue() {
-  //     this.parentVaule++;
-  //     console.log(this.parentVaule); // 21, 22, 22, 누를때마다 증가하는 것 확인 가능
-  //   },
-  // },
+  methods: {
+    sendTotalPrice(data) {
+      //this.parentVaule++;
+      console.log("여기 드디어 그 데이터 :", data);
+    },
+  },
 };
 </script>
 

@@ -89,7 +89,7 @@
       </div>
       <p class="card-text"></p>
       <div class="d-flex justify-content-between align-items-center">
-        <button class="btn btn-primary" @click="addToCart(item.id)">
+        <button class="btn btn-primary" @click="addToCart(this.values1)">
           <!-- @click="addToCart(item.id)" -->
           <i class="fa fa-shopping-cart" aria-hidden="true"></i>
         </button>
@@ -100,7 +100,9 @@
           현재 &nbsp;
           <!-- item.price * item.adultDisPer => 가격의 성인 1인당 할인율 x 성인 수 -->
           <!-- {{ lib.getNumberFormatted(item.price * item.adultDisPer * cntNum.adultNum)}}원 -->
+
           {{ lib.getNumberFormatted(totalPricePerCnt) }}원
+
           <!-- <button @click="updateParentValue">
             클릭시 부모의 데이터 값이 증가합니다.
           </button> -->
@@ -147,22 +149,67 @@ export default {
         babyName: "babyName",
         babyNum: 0,
       },
-      // totalPricePerCnt: 0,
-      totalPricePerCnt: this.item.price,
+      totalPricePerCnt: 0,
+      realSendingTotalPrice: 0,
+      values1: [],
+      values2: 0,
+      // totalPricePerCnt: this.item.price,
     };
   },
 
+  mounted() {
+    this.totalPricePerCnt = this.item.price;
+  },
+
   setup() {
-    const addToCart = (placeId) => {
-      axios.post(`/api/cart/places/${placeId}`).then(() => {
-        console.log("placeId의 성공");
-      });
+    const addToCart = (param) => {
+      console.log("addToCart의 placeId 성공 param :", param);
+
+      let totalPrice = 0;
+      let placeId = 0;
+
+      for (let i = 0; i < param.length; i++) {
+        totalPrice = param[i - 1];
+        placeId = param[i - 2];
+
+        if (placeId === undefined) {
+          totalPrice = param[i];
+          placeId = param[i - 1];
+        }
+      }
+
+      console.log("totalPrice :", totalPrice);
+      console.log("placeId :", placeId);
+
+      axios
+        .post(`/api/cart/places/${placeId}`, { totalPrice, placeId })
+        .then(() => {
+          console.log("placeId의 성공");
+        })
+        .catch();
     };
 
     return { lib, addToCart };
   },
 
   methods: {
+    sendTotalPrice(data) {
+      let id = this.item.id;
+      //console.log("여기! sendTotalPrice data 12345 :", id);
+
+      console.log("sendTotalPrice의 data :", data);
+      console.log("sendTotalPrice의 data :", id);
+
+      this.values1.push(data);
+      this.values1.push(id);
+
+      console.log("sendTotalPrice의 this.values1 :", this.values1);
+
+      //let value1 = 0;
+      //this.realaddToCart(data);
+      //return data;
+    },
+
     decrementAdult(data) {
       data--;
 
@@ -388,14 +435,12 @@ export default {
 
       // console.log("this.totalPricePerCnt :", this.totalPricePerCnt);
       let params = this.totalPricePerCnt;
+
+      // let id = this.item.id;
+      // console.log("여기! increment data 12345 :", id);
       this.sendTotalPrice(params);
 
       return this.totalPricePerCnt;
-    },
-
-    sendTotalPrice(data) {
-      console.log("sendTotalPrice의 data :", data);
-      return data;
     },
   },
 };
