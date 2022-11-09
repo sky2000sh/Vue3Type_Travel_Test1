@@ -97,7 +97,7 @@
           {{ lib.getNumberFormatted(item.price) }}원
         </small> -->
         <small class="current text-muted">
-          현 &nbsp;
+          현재 &nbsp;
           <!-- item.price * item.adultDisPer => 가격의 성인 1인당 할인율 x 성인 수 -->
           <!-- {{ lib.getNumberFormatted(item.price * item.adultDisPer * cntNum.adultNum)}}원 -->
           {{ lib.getNumberFormatted(totalPricePerCnt) }}원
