@@ -184,7 +184,7 @@ export default {
       axios
         .post(`/api/cart/places/${placeId}`, { totalPrice, placeId })
         .then(() => {
-          console.log("placeId의 성");
+          console.log("placeId의 성공");
         })
         .catch();
     };
