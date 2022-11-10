@@ -4,12 +4,19 @@
       <ul>
         <!-- <li v-for="(i, idx) in state.items" :key="idx"> -->
         <li v-for="(i, idx) in state.items" :key="idx">
-          <img :src="i.imgPath" />
+          <img :src="i.img_Path" />
           <span class="name"> {{ i.name }} </span>
-          <span class="price">
+          <!-- <span class="price">
+            첫번째 기존! :
             {{
               lib.getNumberFormatted(i.price - (i.price * i.discountPer) / 100)
             }}원
+          </span> -->
+          <span class="price"> 성인 : {{ i.adult_num }}명 </span>
+          <span class="price"> 아동 : {{ i.kid_num }}명 </span>
+          <span class="price"> 유아 : {{ i.baby_num }}명 </span>
+          <span class="price">
+            총액 : {{ lib.getNumberFormatted(i.total_price) }}원
           </span>
           <i class="fa fa-trash" @click="remove(i.id)"></i>
         </li>
@@ -32,7 +39,7 @@ export default {
   data() {
     return {
       items: Object,
-      imgPath: String,
+      img_Path: String,
 
       parentVaule: 20,
     };

@@ -89,7 +89,14 @@
       </div>
       <p class="card-text"></p>
       <div class="d-flex justify-content-between align-items-center">
-        <button class="btn btn-primary" @click="addToCart(this.values1)">
+        <button
+          v-if="this.values1.length === 0"
+          class="btn btn-primary"
+          @click="addToCart2(this.values2)"
+        >
+          <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+        </button>
+        <button v-else class="btn btn-primary" @click="addToCart(this.values1)">
           <!-- @click="addToCart(item.id)" -->
           <i class="fa fa-shopping-cart" aria-hidden="true"></i>
         </button>
@@ -151,9 +158,9 @@ export default {
       },
       totalPricePerCnt: 0,
       realSendingTotalPrice: 0,
+      valueTotalPrice: this.item.price,
       values1: [],
-      values2: 0,
-      // totalPricePerCnt: this.item.price,
+      values2: [this.item.id, this.item.price],
     };
   },
 
@@ -162,52 +169,90 @@ export default {
   },
 
   setup() {
-    const addToCart = (param) => {
-      console.log("addToCart의 placeId 성공 param :", param);
+    const addToCart2 = (param) => {
+      // console.log("addToCart2 param :", param);
+      // console.log("addToCart2 param.length :", param.length);
 
       let totalPrice = 0;
       let placeId = 0;
+      let adultNum = 1;
+      let kidNum = 0;
+      let babyNum = 0;
 
-      for (let i = 0; i < param.length; i++) {
-        totalPrice = param[i - 1];
-        placeId = param[i - 2];
+      placeId = param[0];
+      totalPrice = param[1];
 
-        if (placeId === undefined) {
-          totalPrice = param[i];
-          placeId = param[i - 1];
-        }
-      }
+      param.push(adultNum);
+      param.push(kidNum);
+      param.push(babyNum);
 
-      console.log("totalPrice :", totalPrice);
-      console.log("placeId :", placeId);
+      console.log("addToCart2 최종 param :", param);
 
       axios
-        .post(`/api/cart/places/${placeId}`, { totalPrice, placeId })
+        .post(`/api/cart/places/${placeId}`, {
+          totalPrice,
+          placeId,
+          adultNum,
+          kidNum,
+          babyNum,
+        })
         .then(() => {
-          console.log("placeId의 성공");
+          console.log("addToCart2 placeId의 성공");
         })
         .catch();
     };
 
-    return { lib, addToCart };
+    const addToCart = (param) => {
+      // console.log("addToCart의 placeId 성공 param :", param);
+
+      let totalPrice = 0;
+      let placeId = 0;
+      let adultNum = 0;
+      let kidNum = 0;
+      let babyNum = 0;
+
+      for (let i = 0; i < param.length; i++) {
+        babyNum = param[i];
+        kidNum = param[i - 1];
+        adultNum = param[i - 2];
+        placeId = param[i - 3];
+        totalPrice = param[i - 4];
+      }
+
+      axios
+        .post(`/api/cart/places/${placeId}`, {
+          totalPrice,
+          placeId,
+          adultNum,
+          kidNum,
+          babyNum,
+        })
+        .then(() => {
+          console.log("addToCart placeId의 성공");
+        })
+        .catch();
+    };
+
+    return { lib, addToCart, addToCart2 };
   },
 
   methods: {
     sendTotalPrice(data) {
       let id = this.item.id;
+      let finalAdultNum = this.cntNum.adultNum;
+      let finalKidNum = this.cntNum.kidNum;
+      let finalBabyNum = this.cntNum.babyNum;
       //console.log("여기! sendTotalPrice data 12345 :", id);
-
-      console.log("sendTotalPrice의 data :", data);
-      console.log("sendTotalPrice의 data :", id);
 
       this.values1.push(data);
       this.values1.push(id);
+      this.values1.push(finalAdultNum);
+      this.values1.push(finalKidNum);
+      this.values1.push(finalBabyNum);
 
       console.log("sendTotalPrice의 this.values1 :", this.values1);
 
-      //let value1 = 0;
-      //this.realaddToCart(data);
-      //return data;
+      return this.values1;
     },
 
     decrementAdult(data) {

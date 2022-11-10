@@ -26,6 +26,21 @@ public class Cart {
 	private int placeId;
 	
 	@Column
-	private int totalPrice;
+	private int total_price;
+	
+	@Column
+	private int adult_num;
+	
+	@Column
+	private int kid_num;
+	
+	@Column
+	private int baby_num;
+	
+	@Column(length = 50, nullable = false)
+	private String name;
+	
+	@Column(length = 100)
+	private String img_Path;
 	
 }

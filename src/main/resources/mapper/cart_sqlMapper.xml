@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.vue3type_travel.web.dao.CartDao">
+	
+	<!--  -->
+	<select id="getCartList" parameterType="int" resultType="com.vue3type_travel.web.entity.Cart">  		
+  		SELECT  /* CartDao.getCartList */
+		     A.MEMBER_ID, A.PLACE_ID, A.TOTAL_PRICE, A.ADULT_NUM, A.KID_NUM, A.BABY_NUM,
+		     B.NAME, B.IMG_PATH
+		  FROM carts A
+		  LEFT OUTER JOIN places B
+					 ON A.PLACE_ID = B.ID
+		 WHERE 1 = 1
+		   AND A.MEMBER_ID = #{memberId}
+		 ORDER BY A.MEMBER_ID;
+  	</select>
+	
+	
+</mapper>
