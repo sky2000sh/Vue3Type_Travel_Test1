@@ -19,7 +19,8 @@
 	
 	<!-- 로그인 시 비밀번호 매칭을 위해 DB 이메일을 통해 비밀번호 가져오기 -->
 	<select id="getMemberEmailFromPwd" parameterType="java.util.Map" resultType="String">
-  		SELECT password
+  		SELECT /* MemberAccountDao.getMemberEmailFromPwd */
+			password
   		FROM member
   		WHERE email = #{emailToPwd}
   	</select>
