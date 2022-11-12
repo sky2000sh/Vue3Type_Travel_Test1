@@ -260,7 +260,7 @@ export default {
 
       if (data <= 0) {
         let data = 1;
-        alert("예약인원수는 최소 1명 이상입니다.");
+        alert("예약인원수는 최소 1명 이상입니다");
         return data;
       }
       if (data > 20) {
