@@ -2,8 +2,23 @@
   <div class="cart">
     <div class="container">
       <ul>
+        <li v-if="state.items.length === 0" class="cart_length_0">
+          장바구니에 담은 상품이 없습니다.
+        </li>
         <!-- <li v-for="(i, idx) in state.items" :key="idx"> -->
-        <li v-for="(i, idx) in state.items" :key="idx">
+        <li v-else v-for="(i, idx) in state.items" :key="idx">
+          &ensp;
+          <!-- <input type="checkbox" v-model="selectedPlace" /> -->
+          <span>
+            <input
+              type="checkbox"
+              v-model="selectedPlaceIds"
+              :value="i.id"
+              @change="clickFunc(i.id)"
+            />
+          </span>
+          <!-- &nbsp; / &ensp; / &emsp;-->
+          &ensp;
           <img :src="i.img_Path" />
           <span class="name"> {{ i.name }} </span>
           <!-- <span class="price">
@@ -21,8 +36,20 @@
           <i class="fa fa-trash" @click="remove(i.id)"></i>
         </li>
       </ul>
-      <!-- <button class="btn btn-primary">구입하기</button> -->
-      <router-link to="/order" class="btn btn-primary"> 구입하기 </router-link>
+      <button
+        v-if="state.items.length !== 0"
+        class="btn btn-primary"
+        @click="onClickOrderSet"
+      >
+        구입하기
+      </button>
+      <!-- <router-link
+        v-if="state.items.length !== 0"
+        to="/order"
+        class="btn btn-primary"
+      >
+        구입하기
+      </router-link> -->
     </div>
   </div>
 </template>
@@ -41,7 +68,7 @@ export default {
       items: Object,
       img_Path: String,
 
-      parentVaule: 20,
+      selectedPlaceIds: [],
     };
   },
 
@@ -71,9 +98,42 @@ export default {
   },
 
   methods: {
-    sendTotalPrice(data) {
-      //this.parentVaule++;
-      console.log("여기 드디어 그 데이터 :", data);
+    clickFunc(value) {
+      console.log("value :", value);
+      this.items = this.state.items;
+
+      let value1 = [];
+      let value2 = [];
+      //let value1 = "";
+      for (let i = 0; i < this.selectedPlaceIds.length; i++) {
+        console.log("여기 selectedPlaceIds[i] :", this.selectedPlaceIds[i]);
+        value1.push(this.selectedPlaceIds[i]);
+        console.log("value1 :", value1);
+
+        /* selectedPlaceIds[i] = placeId = 1번이고,
+          back에서 불러온 하나의 리스트씩 들어있는 id(= placeId)가 그 1번이면
+          그 정보를 다 가져와 array param으로 담기 */
+        // if (this.selectedPlaceIds[i] === this.state.items[i].id) {
+        //   console.log("이러면 완전 성공 :");
+        // }
+      }
+      for (let j = 0; j < this.items.length; j++) {
+        value2.push(this.items[j].id);
+        if (value1.includes(j) === true && value2.includes(j) === true) {
+          console.log("value1[j] :", value1[j]);
+          console.log("value2[j] ", value2[j]);
+
+          if (j in this.state.items) {
+            console.log("this.items is ?:", this.state.items[j]);
+          }
+        }
+      }
+
+      console.log("이러면 최종 성공 :", value1);
+    },
+
+    onClickOrderSet(data) {
+      console.log("onClickOrderSet :", data);
     },
   },
 };
@@ -118,5 +178,10 @@ export default {
   margin: 0 auto;
   padding: 30px 50px;
   font-size: 20px;
+}
+
+.cart .cart_length_0 {
+  text-align: center;
+  border: 0;
 }
 </style>

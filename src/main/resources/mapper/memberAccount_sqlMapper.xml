@@ -5,24 +5,36 @@
 
 	<!-- 회원가입 Insert 처리_1 -->
 	<insert id="memberSignUp" parameterType="com.vue3type_travel.web.entity.Member">
-		INSERT INTO member(id, email, password, role, member_name)
-		VALUES(NULL, #{email}, #{password}, null, #{memberName})
+		INSERT  /* MemberAccountDao.memberSignUp */
+		  INTO member(
+			id, email, password, role, member_name
+		)
+		VALUES(
+			NULL, #{email}, #{password}, null, #{memberName}
+		)
 	</insert>
 	<!-- NEXTVAL(TravelTest.memberSeq) -->
 	
 	<!-- 회원가입 Insert 처리_2 -->
 	<insert id="memberInfoSignUp" parameterType="com.vue3type_travel.web.entity.MemberInfo">
-		INSERT INTO member_info(id, email, phone, birth, gender, address1, address2)
-		VALUES(NULL, #{email}, #{phone}, STR_TO_DATE(#{birth}, '%Y-%m-%d'), #{gender}, #{address1}, #{address2})
+		INSERT  /* MemberAccountDao.memberInfoSignUp */
+		  INTO member_info(
+			id, email, phone, birth,
+			gender, address1, address2
+		)
+		VALUES(
+			NULL, #{email}, #{phone}, STR_TO_DATE(#{birth}, '%Y-%m-%d'),
+			#{gender}, #{address1}, #{address2}
+		)
 	</insert>
 	<!-- NEXTVAL(TravelTest.memberInfoSeq) -->
 	
 	<!-- 로그인 시 비밀번호 매칭을 위해 DB 이메일을 통해 비밀번호 가져오기 -->
 	<select id="getMemberEmailFromPwd" parameterType="java.util.Map" resultType="String">
-  		SELECT /* MemberAccountDao.getMemberEmailFromPwd */
+  		SELECT  /* MemberAccountDao.getMemberEmailFromPwd */
 			password
-  		FROM member
-  		WHERE email = #{emailToPwd}
+  		  FROM member
+  		 WHERE email = #{emailToPwd}
   	</select>
 	
 	

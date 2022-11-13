@@ -22,7 +22,7 @@ public class CartDaoImpl implements CartDao {
 	@Override
 	public List<Cart> getCartList(int param) {
 		//log.debug("getCartList ==================>" + param );
-		System.out.println("여기 memberId123 : " + param);
+		//System.out.println("여기 memberId123 : " + param);
 		return sqlSession.selectList("com.vue3type_travel.web.dao.CartDao.getCartList", param);
 	}
 }

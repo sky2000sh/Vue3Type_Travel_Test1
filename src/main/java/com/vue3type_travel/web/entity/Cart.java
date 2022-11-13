@@ -37,7 +37,7 @@ public class Cart {
 	@Column
 	private int baby_num;
 	
-	@Column(length = 50, nullable = false)
+	@Column(length = 50)
 	private String name;
 	
 	@Column(length = 100)

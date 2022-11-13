@@ -6,8 +6,8 @@
 	<!--  -->
 	<select id="getCartList" parameterType="int" resultType="com.vue3type_travel.web.entity.Cart">  		
   		SELECT  /* CartDao.getCartList */
-		     A.MEMBER_ID, A.PLACE_ID, A.TOTAL_PRICE, A.ADULT_NUM, A.KID_NUM, A.BABY_NUM,
-		     B.NAME, B.IMG_PATH
+		     A.MEMBER_ID AS memberId, A.PLACE_ID AS placeId, A.TOTAL_PRICE, A.ADULT_NUM, A.KID_NUM, A.BABY_NUM,
+		     B.ID AS id, B.NAME, B.IMG_PATH
 		  FROM carts A
 		  LEFT OUTER JOIN places B
 					 ON A.PLACE_ID = B.ID
