@@ -121,7 +121,7 @@ export default {
         value2.push(this.items[j].id);
         if (value1.includes(j) === true && value2.includes(j) === true) {
           console.log("value1[j] :", value1[j]);
-          console.log("value2[j] ", value2[j]);
+          console.log("value2[j] :", value2[j]);
 
           if (j in this.state.items) {
             console.log("this.items is ?:", this.state.items[j]);
