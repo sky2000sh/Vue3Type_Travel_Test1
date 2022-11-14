@@ -1,9 +1,10 @@
-<template>
+<template v-slot:aaa>
   <div class="cart">
     <div class="container">
       <main>
         <div class="py-5 text-center">
           <h2>주문하기</h2>
+          <!-- <div :class="selectedPlaceIds" /> -->
           <p class="lead">
             Below is an example form built entirely with Bootstrap’s form
             controls. Each required form group has a validation state that can
@@ -174,10 +175,28 @@ import { computed, reactive } from "@vue/reactivity";
 import axios from "axios";
 import lib from "@/variousScript/lib";
 import router from "@/router";
+// import cart from "@/views/Cart.vue";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Order",
+
+  // components: {
+  //   Cart: cart,
+  // },
+
+  data() {
+    return {
+      selectedPlaceIds: "",
+    };
+  },
+
+  mounted() {
+    this.emitter.on("sendselectedPlaceIds", (aaa) => {
+      // console.log('여기 container.vue의 a :', a)
+      this.selectedPlaceIds = aaa;
+    });
+  },
 
   setup() {
     const state = reactive({

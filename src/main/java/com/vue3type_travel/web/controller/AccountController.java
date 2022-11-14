@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,6 +41,34 @@ public class AccountController {
 	// 해당 메서드의 리턴되는 Object를 IoC로 등록해준다.
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	// 스프링에서 비동기 처리를 하는 경우 @RequestBody 와 @ResponseBody 를 사용
+	
+	// @RequestBody
+	// http요청의 body 부분을 java 객체로 받게 해서 객체에 저장할 수 있게 해주는 어노테이션. 주로 json을 받을 때 활용
+	// = 클라이언트가 전송하는 Json(application/json) 형태의 HTTP Body를 Java 객체로 변환시켜주는 역할
+	// =기본 생성자로 객체를 만들고, Getter나 Setter 등의 메소드로 필드를 찾아 Reflection으로 값을 설정
+	
+	// @ResponseBody
+	// 서버에서 클라이언트로 응답 데이터를 전송하기 위해서 @ResponseBody 를 사용하여
+	// 자바 객체를 HTTP 응답 본문의 객체로 변환하여 클라이언트로 전송시키는 역할
+	
+	// @RequetParam
+	// 1개의 HTTP 파라미터를 얻기 위해 사용되며 기본값을 지정
+	// 필수 여부가 true이기 때문에 반드시 필요한 경우가 아니라면 required=false 설정이 필요함
+	// 데이터를 받을때는 데이터를 저장하는 이름으로 메서드의 변수명을 설정
+	
+	// @RequestMapping
+	// 컨트롤러를 선택할 때 대표적으로 사용하는 애노테이션이다.
+	// url당 하나의 컨트롤러에 매핑되던 다른 핸들러 매핑과 달리 메서드 단위까지 세분화하여 적용할 수 있으며,
+	// url 뿐 아니라 파라미터, 헤더 등 더욱 넓은 범위를 적용할 수 있다.
+	// get방식과 post방식이 있다.
+	
+	// @PathVariable
+	// @PostMapping("/api/cart/places/{placeId}")
+	// (@PathVariable(name = "placeId") 또는 @PathVariable("placeId")
+	// {}를 활용해 변수처럼 적어준 뒤 @PathVariable 어노테이션 뒤에 {} 안에 적은 변수 명을 name 속성의 값으로 넣는다.
+	// 그 후 이를 받을 자료형과 변수명을 옆에 선언해주면 잘 작동한다. rest api에서 많이 쓰인다.
 	
 	// 아래 post로 데이터를 요청받는데, 인자값을 param으로 받고 그 안에 email, password를 던져서 id 값을 리턴해준다.
 	@PostMapping("/api/account/login")

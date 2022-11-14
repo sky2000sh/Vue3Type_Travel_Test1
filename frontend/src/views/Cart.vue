@@ -1,55 +1,60 @@
 <template>
   <div class="cart">
     <div class="container">
-      <ul>
-        <li v-if="state.items.length === 0" class="cart_length_0">
-          장바구니에 담은 상품이 없습니다.
-        </li>
-        <!-- <li v-for="(i, idx) in state.items" :key="idx"> -->
-        <li v-else v-for="(i, idx) in state.items" :key="idx">
-          &ensp;
-          <!-- <input type="checkbox" v-model="selectedPlace" /> -->
-          <span>
-            <input
-              type="checkbox"
-              v-model="selectedPlaceIds"
-              :value="i.id"
-              @change="clickFunc(i.id)"
-            />
-          </span>
-          <!-- &nbsp; / &ensp; / &emsp;-->
-          &ensp;
-          <img :src="i.img_Path" />
-          <span class="name"> {{ i.name }} </span>
-          <!-- <span class="price">
-            첫번째 기존! :
-            {{
-              lib.getNumberFormatted(i.price - (i.price * i.discountPer) / 100)
-            }}원
-          </span> -->
-          <span class="price"> 성인 : {{ i.adult_num }}명 </span>
-          <span class="price"> 아동 : {{ i.kid_num }}명 </span>
-          <span class="price"> 유아 : {{ i.baby_num }}명 </span>
-          <span class="price">
-            총액 : {{ lib.getNumberFormatted(i.total_price) }}원
-          </span>
-          <i class="fa fa-trash" @click="remove(i.id)"></i>
-        </li>
-      </ul>
+      <table>
+        <tr class="getTh">
+          <th><input type="checkbox" /></th>
+          <th>이미지</th>
+          <th>이름</th>
+          <th>정보</th>
+          <th>금액</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+        <tr v-if="state.items.length === 0" class="cart_length_0">
+          <td>장바구니에 담은 상품이 없습니다.</td>
+        </tr>
+        <tr v-else v-for="(i, idx) in state.items" :key="idx">
+          <slot name="aaa">
+            <td>
+              <input
+                type="checkbox"
+                v-model="selectedPlaceIds"
+                :value="i.id"
+                true-value="Y"
+                false-value="N"
+                @change="getCheckboxValue"
+              />
+            </td>
+            <td><img :src="i.img_Path" /></td>
+            <td>
+              <span class="name"> {{ i.name }} </span>
+            </td>
+            <td>
+              <span class="price"> 성인 : {{ i.adult_num }}명 </span>
+              <span class="price"> 아동 : {{ i.kid_num }}명 </span>
+              <span class="price"> 유아 : {{ i.baby_num }}명 </span>
+            </td>
+            <td>
+              <span class="price">
+                총액 : {{ lib.getNumberFormatted(i.total_price) }}원
+              </span>
+            </td>
+            <td class="spans"></td>
+            <td></td>
+            <td><i class="fa fa-trash" @click="remove(i.id)"></i></td>
+          </slot>
+        </tr>
+      </table>
+      <br />
       <button
         v-if="state.items.length !== 0"
         class="btn btn-primary"
-        @click="onClickOrderSet"
+        @click="onClickOrderSet()"
       >
         구입하기
       </button>
-      <!-- <router-link
-        v-if="state.items.length !== 0"
-        to="/order"
-        class="btn btn-primary"
-      >
-        구입하기
-      </router-link> -->
     </div>
   </div>
 </template>
@@ -57,6 +62,7 @@
 <script>
 import { reactive } from "vue";
 import axios from "axios";
+import router from "@/router";
 import lib from "@/variousScript/lib";
 
 export default {
@@ -98,74 +104,82 @@ export default {
   },
 
   methods: {
-    clickFunc(value) {
-      console.log("value :", value);
-      this.items = this.state.items;
+    // onClickOrderSet(data) {
+    //   console.log("onClickOrderSet :", data);
+    // },
+    onClickOrderSet() {
+      //console.log("onClickOrderSet :", this.state.items);
+      //console.log("onClickOrderSet :", event.target.checked);
 
-      let value1 = [];
-      let value2 = [];
-      //let value1 = "";
-      for (let i = 0; i < this.selectedPlaceIds.length; i++) {
-        console.log("여기 selectedPlaceIds[i] :", this.selectedPlaceIds[i]);
-        value1.push(this.selectedPlaceIds[i]);
-        console.log("value1 :", value1);
+      /* selectedPlaceIds[i] = placeId = 1번이고,
+        back에서 불러온 하나의 리스트씩 들어있는 id(= placeId)가 그 1번이면
+        그 정보를 다 가져와 array param으로 담기 */
 
-        /* selectedPlaceIds[i] = placeId = 1번이고,
-          back에서 불러온 하나의 리스트씩 들어있는 id(= placeId)가 그 1번이면
-          그 정보를 다 가져와 array param으로 담기 */
-        // if (this.selectedPlaceIds[i] === this.state.items[i].id) {
-        //   console.log("이러면 완전 성공 :");
-        // }
-      }
-      for (let j = 0; j < this.items.length; j++) {
-        value2.push(this.items[j].id);
-        if (value1.includes(j) === true && value2.includes(j) === true) {
-          console.log("value1[j] :", value1[j]);
-          console.log("value2[j] :", value2[j]);
+      console.log("onClickOrderSet :", this.selectedPlaceIds);
+      console.log("onClickOrderSet typeof :", typeof this.selectedPlaceIds);
+      //this.emitter.emit("sendselectedPlaceIds", this.selectedPlaceIds);
 
-          if (j in this.state.items) {
-            console.log("this.items is ?:", this.state.items[j]);
-          }
-        }
-      }
+      axios
+        .post("/api/cart/placesForOrder", this.selectedPlaceIds)
+        .then(({ data }) => {
+          console.log("여기가 Cart.vue의 최종 주문 data :", data);
+          //alert("주문 완료했습니다.");
 
-      console.log("이러면 최종 성공 :", value1);
+          // const param = {
+          //   actId: '',
+          //   eventIds: strEvent,
+          // };
+
+          // 후에 주문하기로 가기
+          // router.push({ path: "/order", params: param });
+        });
     },
 
-    onClickOrderSet(data) {
-      console.log("onClickOrderSet :", data);
-    },
+    // getCheckboxValue(event) {
+    //   console.log("getCheckboxValue checked :", event.target.checked); // true
+    //   console.log("getCheckboxValue value :", event.target.value); // 1 또는 2 (= placeId)
+    //   console.log("selectedPlaceIds :", this.selectedPlaceIds);
+    // },
   },
 };
 </script>
 
 <style>
-.cart ul {
+.cart table {
   list-style: none;
   margin: 0;
+  margin-top: 25px;
   padding: 0;
 }
 
-.cart ul li {
+.cart table .getTh {
+  text-align: center;
+}
+
+.cart table tr {
+  /* .cart table td { */
   border: 1px solid #eee;
   margin-top: 25px;
   margin-bottom: 25px;
 }
 
-.cart ul li img {
+.cart table img {
   width: 150px;
   height: 150px;
 }
 
-.cart ul li .name {
+.cart table .name {
   margin-left: 25px;
 }
 
-.cart ul li .price {
+.cart table .price {
   margin-left: 25px;
 }
+.cart table .spans {
+  width: 500px;
+}
 
-.cart ul li i {
+.cart table i {
   float: right;
   font-size: 20px;
   margin-top: 65px;

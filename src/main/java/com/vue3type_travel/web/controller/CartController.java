@@ -115,6 +115,35 @@ public class CartController {
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	// cart의 체크박스 선택해 최종 주문된 카트 목록 가져오기
+	@PostMapping("/api/cart/placesForOrder")
+	public ResponseEntity<Object> getPlacesForOrder(@RequestBody List<Integer> param, @CookieValue(value="token", required = false) String token) {
+	
+		if(!jwtService.isValid(token)) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+		}
+		
+		int memberId = jwtService.getId(token);
+		System.out.println("여기 memberId : " + memberId);
+		
+		System.out.println("여기 param : " + param);
+		
+		Cart newCart = new Cart();
+		for(int i = 0; i<param.size(); i++) {
+			System.out.println("여기 param의 get(i) : " + param.get(i));
+			
+			newCart.setMemberId(memberId);
+			newCart.setPlaceId(param.get(i));
+			
+			// 여기에 dao에가서 파라미터 placeid를 foreach로 받아서 넣어 선택한것만 나오도록 sql짜
+			
+		}
+		
+		System.out.println("여기 newCart : " + newCart);
+		
+		return new ResponseEntity<>(HttpStatus.OK);		
+	}
 
 
 }
