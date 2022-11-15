@@ -139,7 +139,7 @@ export default {
     //   console.log("getCheckboxValue checked :", event.target.checked); // true
     //   console.log("getCheckboxValue value :", event.target.value); // 1 또는 2 (= placeId)
     //   console.log("selectedPlaceIds :", this.selectedPlaceIds);
-    // },
+    // }
   },
 };
 </script>
