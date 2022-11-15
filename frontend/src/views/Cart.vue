@@ -3,6 +3,7 @@
     <div class="container">
       <table>
         <tr class="getTh">
+          <!-- <label for="chk"> -->
           <th><input type="checkbox" /></th>
           <th>이미지</th>
           <th>이름</th>
@@ -10,6 +11,7 @@
           <th>금액</th>
           <th></th>
           <th></th>
+          <!-- </label> -->
           <th></th>
         </tr>
         <tr v-if="state.items.length === 0" class="cart_length_0">
@@ -17,15 +19,19 @@
         </tr>
         <tr v-else v-for="(i, idx) in state.items" :key="idx">
           <slot name="aaa">
+            <!-- <label for="chk"> -->
             <td>
               <input
                 type="checkbox"
                 v-model="selectedPlaceIds"
                 :value="i.id"
-                true-value="Y"
-                false-value="N"
                 @change="getCheckboxValue"
               />
+              <!-- true-value="Y"
+                false-value="N" -->
+              <!-- id="chk" -->
+              <!-- :value="i.id" -->
+              <!-- @change="getCheckboxValue" -->
             </td>
             <td><img :src="i.img_Path" /></td>
             <td>
@@ -43,6 +49,7 @@
             </td>
             <td class="spans"></td>
             <td></td>
+            <!-- </label> -->
             <td><i class="fa fa-trash" @click="remove(i.id)"></i></td>
           </slot>
         </tr>
@@ -51,7 +58,7 @@
       <button
         v-if="state.items.length !== 0"
         class="btn btn-primary"
-        @click="onClickOrderSet()"
+        @click="onClickOrderSet(state.items[0].memberId)"
       >
         구입하기
       </button>
@@ -63,6 +70,7 @@
 import { reactive } from "vue";
 import axios from "axios";
 import router from "@/router";
+// import store from "@/store/index";
 import lib from "@/variousScript/lib";
 
 export default {
@@ -75,6 +83,7 @@ export default {
       img_Path: String,
 
       selectedPlaceIds: [],
+      // { type: Boolean,},
     };
   },
 
@@ -104,23 +113,26 @@ export default {
   },
 
   methods: {
-    // onClickOrderSet(data) {
-    //   console.log("onClickOrderSet :", data);
-    // },
-    onClickOrderSet() {
-      //console.log("onClickOrderSet :", this.state.items);
-      //console.log("onClickOrderSet :", event.target.checked);
-
+    onClickOrderSet(value) {
       /* selectedPlaceIds[i] = placeId = 1번이고,
         back에서 불러온 하나의 리스트씩 들어있는 id(= placeId)가 그 1번이면
         그 정보를 다 가져와 array param으로 담기 */
-
       console.log("onClickOrderSet :", this.selectedPlaceIds);
       console.log("onClickOrderSet typeof :", typeof this.selectedPlaceIds);
+
+      let memberId = value;
+      console.log(" memberId :", memberId);
+      console.log(" memberId typeof :", typeof memberId);
+
+      let settin = [{ memberId: memberId, placeId: this.selectedPlaceIds }];
       //this.emitter.emit("sendselectedPlaceIds", this.selectedPlaceIds);
+
+      console.log("settin :", settin);
+      console.log("settin typeof :", typeof settin);
 
       axios
         .post("/api/cart/placesForOrder", this.selectedPlaceIds)
+        // .post("/api/cart/placesForOrder", settin)
         .then(({ data }) => {
           console.log("여기가 Cart.vue의 최종 주문 data :", data);
           //alert("주문 완료했습니다.");

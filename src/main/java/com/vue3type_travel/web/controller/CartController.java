@@ -18,7 +18,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.vue3type_travel.web.dao.CartDao;
 import com.vue3type_travel.web.entity.Cart;
-import com.vue3type_travel.web.entity.Place;
 import com.vue3type_travel.web.repository.CartRepository;
 import com.vue3type_travel.web.repository.PlaceRepository;
 import com.vue3type_travel.web.service.JwtService;
@@ -129,20 +128,12 @@ public class CartController {
 		
 		System.out.println("여기 param : " + param);
 		
-		Cart newCart = new Cart();
-		for(int i = 0; i<param.size(); i++) {
-			System.out.println("여기 param의 get(i) : " + param.get(i));
-			
-			newCart.setMemberId(memberId);
-			newCart.setPlaceId(param.get(i));
-			
-			// 여기에 dao에가서 파라미터 placeid를 foreach로 받아서 넣어 선택한것만 나오도록 sql짜
-			
-		}
+		List<Cart> cartSelectedList = carDaoMapper.getSelectedCartList(param);
+		System.out.println("여기 cartSelectedList : " + cartSelectedList);
 		
-		System.out.println("여기 newCart : " + newCart);
+		return new ResponseEntity<>(cartSelectedList, HttpStatus.OK);	
 		
-		return new ResponseEntity<>(HttpStatus.OK);		
+		// return null;
 	}
 
 

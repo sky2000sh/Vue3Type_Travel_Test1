@@ -3,7 +3,7 @@
 
 <mapper namespace="com.vue3type_travel.web.dao.CartDao">
 	
-	<!--  -->
+	<!-- 회원이 담은 카트 목록 -->
 	<select id="getCartList" parameterType="int" resultType="com.vue3type_travel.web.entity.Cart">  		
   		SELECT  /* CartDao.getCartList */
 		     A.MEMBER_ID AS memberId, A.PLACE_ID AS placeId, A.TOTAL_PRICE, A.ADULT_NUM, A.KID_NUM, A.BABY_NUM,
@@ -13,7 +13,27 @@
 					 ON A.PLACE_ID = B.ID
 		 WHERE 1 = 1
 		   AND A.MEMBER_ID = #{memberId}
-		 ORDER BY A.MEMBER_ID;
+		 ORDER BY A.MEMBER_ID
+  	</select>
+  	
+  	<!-- 카트목록 중 체크선택한 목록들이 주문정보로 가져가기 위한 리스트 목록 -->
+  	<select id="getSelectedCartList" parameterType="java.util.List" resultType="com.vue3type_travel.web.entity.Cart">  		
+  		SELECT  /* CartDao.getSelectedCartList */
+		     A.MEMBER_ID AS memberId, A.PLACE_ID AS placeId, A.TOTAL_PRICE, A.ADULT_NUM, A.KID_NUM, A.BABY_NUM,
+		     B.ID AS id, B.NAME, B.IMG_PATH
+		  FROM carts A
+		  LEFT OUTER JOIN places B
+					 ON A.PLACE_ID = B.ID
+		 WHERE 1 = 1
+		   <!-- AND A.MEMBER_ID = #{memberId, jdbcType=INTEGER} -->
+		   <!-- AND A.MEMBER_ID IN ( #{memberId} ) -->
+		   <!-- AND A.MEMBER_ID IN
+		   <foreach collection="list" item="memberId" open="(" close=")" separator=",">
+				#{memberId, jdbcType=INTEGER}
+			</foreach> -->
+		   AND A.PLACE_ID IN<foreach collection="list" item="placeId" open="(" close=")" separator=",">
+				#{placeId, jdbcType=INTEGER} </foreach>
+		 ORDER BY A.MEMBER_ID, A.PLACE_ID
   	</select>
 	
 	

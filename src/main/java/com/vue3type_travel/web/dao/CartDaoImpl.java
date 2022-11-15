@@ -30,4 +30,10 @@ public class CartDaoImpl implements CartDao {
 		log.info("getCartList ==================> " + param );
 		return sqlSession.selectList("com.vue3type_travel.web.dao.CartDao.getCartList", param);
 	}
+
+	@Override
+	public List<Cart> getSelectedCartList(List<Integer> param) {
+		log.info("getSelectedCartList ==================> " + param );
+		return sqlSession.selectList("com.vue3type_travel.web.dao.CartDao.getSelectedCartList", param);
+	}
 }

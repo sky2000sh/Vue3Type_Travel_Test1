@@ -43,4 +43,13 @@ public class Cart {
 	@Column(length = 100)
 	private String img_Path;
 	
+//	@Column
+//	private List<Integer> list;
+	
+//	public List<Integer> getList() {
+//		return list;
+//	}
+//	
+//	public void set
+	
 }
