@@ -11,7 +11,7 @@ import { createStore } from 'vuex'
 //   },
 //   modules: {
 //   }
-// }
+// })
 
 const store = createStore({
     state () {
