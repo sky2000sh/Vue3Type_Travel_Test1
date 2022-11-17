@@ -58,10 +58,18 @@
       <button
         v-if="state.items.length !== 0"
         class="btn btn-primary"
-        @click="onClickOrderSet(state.items[0].memberId)"
+        @click="onClickOrderSet"
       >
         구입하기
       </button>
+      <!-- <router-link
+        v-if="state.items.length !== 0"
+        to="{path:'/order' params:{this.dataResult}}"
+        class="btn btn-primary"
+        @click="onClickOrderSet"
+      >
+        구입하기
+      </router-link> -->
     </div>
   </div>
 </template>
@@ -113,39 +121,42 @@ export default {
   },
 
   methods: {
-    onClickOrderSet(value) {
+    onClickOrderSet() {
       /* selectedPlaceIds[i] = placeId = 1번이고,
         back에서 불러온 하나의 리스트씩 들어있는 id(= placeId)가 그 1번이면
         그 정보를 다 가져와 array param으로 담기 */
       console.log("onClickOrderSet :", this.selectedPlaceIds);
       console.log("onClickOrderSet typeof :", typeof this.selectedPlaceIds);
 
-      let memberId = value;
-      console.log(" memberId :", memberId);
-      console.log(" memberId typeof :", typeof memberId);
-
-      let settin = [{ memberId: memberId, placeId: this.selectedPlaceIds }];
-      //this.emitter.emit("sendselectedPlaceIds", this.selectedPlaceIds);
-
-      console.log("settin :", settin);
-      console.log("settin typeof :", typeof settin);
-
       axios
         .post("/api/cart/placesForOrder", this.selectedPlaceIds)
-        // .post("/api/cart/placesForOrder", settin)
         .then(({ data }) => {
           console.log("여기가 Cart.vue의 최종 주문 data :", data);
+          console.log("여기가 Cart.vue의 최종 주문 data typeof :", typeof data);
+          console.log(
+            "여기가 Cart.vue의 최종 주문 data toString :",
+            toString(data)
+          );
           //alert("주문 완료했습니다.");
 
-          // const param = {
-          //   actId: '',
-          //   eventIds: strEvent,
-          // };
-
           // 후에 주문하기로 가기
-          // router.push({ path: "/order", params: param });
+          // path: "/order",
+
+          console.log("여기가 Cart.vue의 stringify1 : %o", data);
+          console.log("여기가 Cart.vue의 stringify1 :", JSON.stringify(data));
+          console.log("여기가 Cart.vue의 stringify2 :", data[0].memberId);
+
+          router.push({
+            name: "ReceiveTest",
+            query: [JSON.stringify(data)],
+            // query: [data],
+            params: JSON.stringify(data),
+          });
         });
     },
+
+    // params: [data],
+    // query: [JSON.stringify(data)],
 
     // getCheckboxValue(event) {
     //   console.log("getCheckboxValue checked :", event.target.checked); // true

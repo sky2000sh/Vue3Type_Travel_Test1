@@ -124,16 +124,21 @@ public class CartController {
 		}
 		
 		int memberId = jwtService.getId(token);
-		System.out.println("여기 memberId : " + memberId);
-		
+		System.out.println("여기 memberId : " + memberId);		
 		System.out.println("여기 param : " + param);
 		
-		List<Cart> cartSelectedList = carDaoMapper.getSelectedCartList(param);
-		System.out.println("여기 cartSelectedList : " + cartSelectedList);
+		List<Cart> cartSelectedList = carDaoMapper.getSelectedCartList(param);		
 		
-		return new ResponseEntity<>(cartSelectedList, HttpStatus.OK);	
+		int selectedMemberId = 0;
+		for(int i = 0; i<cartSelectedList.size(); i++) {			
+			selectedMemberId = cartSelectedList.get(i).getMemberId();
+		}
 		
-		// return null;
+		if(cartSelectedList.size() != 0 && selectedMemberId == memberId) {
+			return new ResponseEntity<>(cartSelectedList, HttpStatus.OK);
+		} else {
+			return null;
+		}
 	}
 
 

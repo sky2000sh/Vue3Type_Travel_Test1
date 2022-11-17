@@ -185,17 +185,28 @@ export default {
   //   Cart: cart,
   // },
 
+  props: {
+    param: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
+
   data() {
     return {
       selectedPlaceIds: "",
     };
   },
 
+  created() {
+    console.log("created this.route :", this.$route);
+  },
+
   mounted() {
-    this.emitter.on("sendselectedPlaceIds", (aaa) => {
-      // console.log('여기 container.vue의 a :', a)
-      this.selectedPlaceIds = aaa;
-    });
+    let result = [this.$route.query];
+    console.log("mounted의 result :", result);
+    console.log("mounted의 query :", this.$route.query);
+    console.log("mounted의 params :", this.$route.params);
   },
 
   setup() {
@@ -236,7 +247,7 @@ export default {
         console.log("여기가 Order.vue 의 args", args);
         alert("주문 완료했습니다.");
 
-        // 후에 나의 구입목록으로 들어가기
+        // 후에 나의 구입목록으로 들어가
         router.push({ path: "/" });
       });
     };
