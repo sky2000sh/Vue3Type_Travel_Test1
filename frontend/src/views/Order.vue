@@ -247,7 +247,7 @@ export default {
         console.log("여기가 Order.vue 의 args", args);
         alert("주문 완료했습니다.");
 
-        // 후에 나의 구입목록으로 들어가
+        // 후에 나의 구입목록으로 들어가기
         router.push({ path: "/" });
       });
     };
