@@ -197,7 +197,7 @@ export default {
     console.log("created this.route :", this.$route);
     console.log("created query :", this.$route.query);
     const sendingData = this.$route.query;
-    console.log("created sendingData :", sendingData);
+    console.log("created sendingData ", sendingData);
 
     this.fnSelectedPlace(sendingData);
   },
