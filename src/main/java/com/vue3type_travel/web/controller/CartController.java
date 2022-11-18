@@ -1,5 +1,6 @@
 package com.vue3type_travel.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -117,18 +118,22 @@ public class CartController {
 	
 	// cart의 체크박스 선택해 최종 주문된 카트 목록 가져오기
 	@PostMapping("/api/cart/placesForOrder")
-	public ResponseEntity<Object> getPlacesForOrder(@RequestBody List<Integer> param, @CookieValue(value="token", required = false) String token) {
-	
+	public ResponseEntity<Object> getPlacesForOrder(@RequestBody Map<Integer, Object> param, @CookieValue(value="token", required = false) String token) {
+
 		if(!jwtService.isValid(token)) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 		
 		int memberId = jwtService.getId(token);
-		System.out.println("여기 memberId : " + memberId);		
+		System.out.println("여기 getPlacesForOrder memberId : " + memberId);		
 		System.out.println("여기 param : " + param);
 		
-		List<Cart> cartSelectedList = carDaoMapper.getSelectedCartList(param);		
+		List<Object> list = new ArrayList<Object>();
+		for(int i = 0; i<param.size(); i++) {
+			list.add(param.get(i));
+		}
 		
+		List<Cart> cartSelectedList = carDaoMapper.getSelectedCartList(list);		
 		int selectedMemberId = 0;
 		for(int i = 0; i<cartSelectedList.size(); i++) {			
 			selectedMemberId = cartSelectedList.get(i).getMemberId();

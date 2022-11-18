@@ -62,14 +62,6 @@
       >
         구입하기
       </button>
-      <!-- <router-link
-        v-if="state.items.length !== 0"
-        to="{path:'/order' params:{this.dataResult}}"
-        class="btn btn-primary"
-        @click="onClickOrderSet"
-      >
-        구입하기
-      </router-link> -->
     </div>
   </div>
 </template>
@@ -91,7 +83,6 @@ export default {
       img_Path: String,
 
       selectedPlaceIds: [],
-      // { type: Boolean,},
     };
   },
 
@@ -127,42 +118,23 @@ export default {
         그 정보를 다 가져와 array param으로 담기 */
       console.log("onClickOrderSet :", this.selectedPlaceIds);
       console.log("onClickOrderSet typeof :", typeof this.selectedPlaceIds);
-
-      axios
-        .post("/api/cart/placesForOrder", this.selectedPlaceIds)
-        .then(({ data }) => {
-          console.log("여기가 Cart.vue의 최종 주문 data :", data);
-          console.log("여기가 Cart.vue의 최종 주문 data typeof :", typeof data);
-          console.log(
-            "여기가 Cart.vue의 최종 주문 data toString :",
-            toString(data)
-          );
-          //alert("주문 완료했습니다.");
-
-          // 후에 주문하기로 가기
-          // path: "/order",
-
-          console.log("여기가 Cart.vue의 stringify1 : %o", data);
-          console.log("여기가 Cart.vue의 stringify1 :", JSON.stringify(data));
-          console.log("여기가 Cart.vue의 stringify2 :", data[0].memberId);
-
-          router.push({
-            name: "ReceiveTest",
-            query: [JSON.stringify(data)],
-            // query: [data],
-            params: JSON.stringify(data),
-          });
+      let selectedLength = this.selectedPlaceIds.length;
+      if (
+        selectedLength === 0 ||
+        selectedLength === null ||
+        selectedLength === undefined
+      ) {
+        alert("주문상품을 체크해주세요.");
+      } else {
+        // 후에 주문하기로 가기
+        // path: "/order",
+        router.push({
+          name: "ReceiveTest",
+          query: this.selectedPlaceIds,
+          params: this.selectedPlaceIds,
         });
+      }
     },
-
-    // params: [data],
-    // query: [JSON.stringify(data)],
-
-    // getCheckboxValue(event) {
-    //   console.log("getCheckboxValue checked :", event.target.checked); // true
-    //   console.log("getCheckboxValue value :", event.target.value); // 1 또는 2 (= placeId)
-    //   console.log("selectedPlaceIds :", this.selectedPlaceIds);
-    // },
   },
 };
 </script>

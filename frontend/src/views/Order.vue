@@ -175,15 +175,10 @@ import { computed, reactive } from "@vue/reactivity";
 import axios from "axios";
 import lib from "@/variousScript/lib";
 import router from "@/router";
-// import cart from "@/views/Cart.vue";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Order",
-
-  // components: {
-  //   Cart: cart,
-  // },
 
   props: {
     param: {
@@ -200,16 +195,22 @@ export default {
 
   created() {
     console.log("created this.route :", this.$route);
+    console.log("created query :", this.$route.query);
+    const sendingData = this.$route.query;
+    console.log("created sendingData :", sendingData);
+
+    this.fnSelectedPlace(sendingData);
   },
 
   mounted() {
-    let result = [this.$route.query];
-    console.log("mounted의 result :", result);
-    console.log("mounted의 query :", this.$route.query);
-    console.log("mounted의 params :", this.$route.params);
+    // console.log("mounted의 query :", this.$route.query);
+    // const sendingData = this.$route.query;
+    // console.log("mounted의 sendingData :", sendingData);
   },
 
+  // setup()함수를 지우고 옛날 것으로 치환하기
   setup() {
+    // state부분은 data() 부분으로 갖다 넣기
     const state = reactive({
       items: [],
       form: {
@@ -221,6 +222,7 @@ export default {
       },
     });
 
+    // load는 method에 가져온 데이터를 mounted에 뿌리기
     const load = () => {
       axios.get("/api/cart/places").then(({ data }) => {
         console.log("여기가 Cart.vue 의 data :", data);
@@ -228,6 +230,7 @@ export default {
       });
     };
 
+    // 결제하기 버튼 누를 때
     const submit = () => {
       let places = "";
 
@@ -252,6 +255,7 @@ export default {
       });
     };
 
+    // computed: {}를 활용해서 lib 가져오기 + computedPrice도 계산해서 놓거나, mounted에 넣기
     const computedPrice = computed(() => {
       let result = 0;
 
@@ -265,6 +269,14 @@ export default {
     load();
 
     return { state, lib, submit, computedPrice };
+  },
+
+  methods: {
+    fnSelectedPlace(value) {
+      axios.post("/api/cart/placesForOrder", value).then(({ data }) => {
+        console.log("여기가 order 페이지의 최종 주문 result :", data);
+      });
+    },
   },
 };
 </script>
