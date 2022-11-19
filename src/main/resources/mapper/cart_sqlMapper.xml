@@ -6,7 +6,9 @@
 	<!-- 회원이 담은 카트 목록 -->
 	<select id="getCartList" parameterType="int" resultType="com.vue3type_travel.web.entity.Cart">  		
   		SELECT  /* CartDao.getCartList */
-		     A.MEMBER_ID AS memberId, A.PLACE_ID AS placeId, A.TOTAL_PRICE, A.ADULT_NUM, A.KID_NUM, A.BABY_NUM,
+		     A.MEMBER_ID AS memberId, A.PLACE_ID AS placeId,
+		     A.TOTAL_PRICE, A.ADULT_NUM, A.KID_NUM, A.BABY_NUM,
+		     A.DATE_FROM, A.DATE_TO,
 		     B.ID AS id, B.NAME, B.IMG_PATH
 		  FROM carts A
 		  LEFT OUTER JOIN places B

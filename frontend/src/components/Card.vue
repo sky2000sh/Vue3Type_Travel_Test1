@@ -8,6 +8,20 @@
         </span>
         <span class="discount badge bg-danger"> {{ item.discountPer }}% </span>
       </p>
+      <div class="inputfield">
+        <small> 시작일자 </small>
+        <span>
+          <input type="date" class="input" v-model="date.date_from" />
+        </span>
+
+        <small> 종료일자 </small>
+        <span>
+          <input type="date" class="input" v-model="date.date_to" />
+        </span>
+      </div>
+
+      <br />
+
       <div class="d-flex justify-content-between align-items-center">
         <!-- <small> 인원선택 </small> -->
 
@@ -155,12 +169,21 @@ export default {
         kidNum: 0,
         babyName: "babyName",
         babyNum: 0,
+        // date_from: "",
+        // date_to: "",
+        // date_cart_put: "",
       },
       totalPricePerCnt: 0,
       realSendingTotalPrice: 0,
       valueTotalPrice: this.item.price,
       values1: [],
       values2: [this.item.id, this.item.price],
+
+      date: {
+        date_from: "",
+        date_to: "",
+        date_cart_put: "",
+      },
     };
   },
 
@@ -203,20 +226,27 @@ export default {
     };
 
     const addToCart = (param) => {
-      // console.log("addToCart의 placeId 성공 param :", param);
+      console.log("addToCart의 placeId 성공 param :", param);
+      //console.log("addToCart의 date :", this.date);
 
       let totalPrice = 0;
       let placeId = 0;
       let adultNum = 0;
       let kidNum = 0;
       let babyNum = 0;
+      let date_from = "";
+      let date_to = "";
+      let date_cart_put = "";
 
       for (let i = 0; i < param.length; i++) {
-        babyNum = param[i];
-        kidNum = param[i - 1];
-        adultNum = param[i - 2];
-        placeId = param[i - 3];
-        totalPrice = param[i - 4];
+        date_cart_put = param[i];
+        date_to = param[i - 1];
+        date_from = param[i - 2];
+        babyNum = param[i - 3];
+        kidNum = param[i - 4];
+        adultNum = param[i - 5];
+        placeId = param[i - 6];
+        totalPrice = param[i - 7];
       }
 
       axios
@@ -226,6 +256,9 @@ export default {
           adultNum,
           kidNum,
           babyNum,
+          date_from,
+          date_to,
+          date_cart_put,
         })
         .then(() => {
           console.log("addToCart placeId의 성공");
@@ -242,6 +275,9 @@ export default {
       let finalAdultNum = this.cntNum.adultNum;
       let finalKidNum = this.cntNum.kidNum;
       let finalBabyNum = this.cntNum.babyNum;
+      let date_from = this.date.date_from;
+      let date_to = this.date.date_to;
+      let date_cart_put = this.date.date_cart_put;
       //console.log("여기! sendTotalPrice data 12345 :", id);
 
       this.values1.push(data);
@@ -249,6 +285,9 @@ export default {
       this.values1.push(finalAdultNum);
       this.values1.push(finalKidNum);
       this.values1.push(finalBabyNum);
+      this.values1.push(date_from);
+      this.values1.push(date_to);
+      this.values1.push(date_cart_put);
 
       console.log("sendTotalPrice의 this.values1 :", this.values1);
 

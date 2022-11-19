@@ -43,6 +43,15 @@ public class Cart {
 	@Column(length = 100)
 	private String img_Path;
 	
+	@Column(nullable = false)
+	private String date_from;
+	
+	@Column(nullable = false)
+	private String date_to;
+	
+	@Column
+	private String date_cart_put;
+	
 //	@Column
 //	private List<Integer> list;
 	

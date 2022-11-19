@@ -8,6 +8,7 @@
           <th>이미지</th>
           <th>이름</th>
           <th>정보</th>
+          <th>일자</th>
           <th>금액</th>
           <th></th>
           <th></th>
@@ -41,6 +42,12 @@
               <span class="price"> 성인 : {{ i.adult_num }}명 </span>
               <span class="price"> 아동 : {{ i.kid_num }}명 </span>
               <span class="price"> 유아 : {{ i.baby_num }}명 </span>
+            </td>
+            <td>
+              <span class="date">
+                {{ i.date_from }} &nbsp;~&nbsp; {{ i.date_to }}
+                (_박 _일)
+              </span>
             </td>
             <td>
               <span class="price">
@@ -167,11 +174,15 @@ export default {
   margin-left: 25px;
 }
 
+.cart table .date {
+  margin-left: 25px;
+}
+
 .cart table .price {
   margin-left: 25px;
 }
 .cart table .spans {
-  width: 500px;
+  width: 250px;
 }
 
 .cart table i {

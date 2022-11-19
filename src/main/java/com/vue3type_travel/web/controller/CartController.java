@@ -94,6 +94,10 @@ public class CartController {
 			newCart.setAdult_num(Integer.parseInt(param.get("adultNum")));
 			newCart.setKid_num(Integer.parseInt(param.get("kidNum")));
 			newCart.setBaby_num(Integer.parseInt(param.get("babyNum")));
+			newCart.setDate_from(param.get("date_from"));
+			newCart.setDate_to(param.get("date_to"));
+			newCart.setDate_cart_put(param.get("date_cart_put"));
+			
 			cartRepository.save(newCart);
 		}
 		
