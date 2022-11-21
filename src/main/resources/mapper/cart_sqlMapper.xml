@@ -22,7 +22,9 @@
   	<!-- java.util.List -->
   	<select id="getSelectedCartList" parameterType="java.util.List" resultType="com.vue3type_travel.web.entity.Cart">  		
   		SELECT  /* CartDao.getSelectedCartList */
-		     A.MEMBER_ID AS memberId, A.PLACE_ID AS placeId, A.TOTAL_PRICE, A.ADULT_NUM, A.KID_NUM, A.BABY_NUM,
+		     A.MEMBER_ID AS memberId, A.PLACE_ID AS placeId, A.TOTAL_PRICE,
+		     A.ADULT_NUM, A.KID_NUM, A.BABY_NUM,
+		     A.DATE_FROM, A.DATE_TO,
 		     B.ID AS id, B.NAME, B.IMG_PATH
 		  FROM carts A
 		  LEFT OUTER JOIN places B
@@ -36,7 +38,7 @@
 			</foreach> -->
 		   AND A.PLACE_ID IN<foreach collection="list" item="placeId" open="(" close=")" separator=",">
 				#{placeId, jdbcType=INTEGER} </foreach>
-		 ORDER BY A.MEMBER_ID, A.PLACE_ID
+		 ORDER BY A.MEMBER_ID, A.DATE_FROM, A.DATE_TO, A.PLACE_ID
   	</select>
   	<!-- 
   	AND A.PLACE_ID IN<foreach collection="list" item="placeId" open="(" close=")" separator=",">

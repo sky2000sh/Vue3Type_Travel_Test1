@@ -45,8 +45,15 @@
             </td>
             <td>
               <span class="date">
-                {{ i.date_from }} &nbsp;~&nbsp; {{ i.date_to }}
-                (_박 _일)
+                {{ i.date_from }} &nbsp;~&nbsp; {{ i.date_to }} ({{
+                  Number(i.date_to.substring(8, 10)) -
+                  Number(i.date_from.substring(8, 10))
+                }}박
+                {{
+                  Number(i.date_to.substring(8, 10)) -
+                  Number(i.date_from.substring(8, 10)) +
+                  1
+                }}일)
               </span>
             </td>
             <td>

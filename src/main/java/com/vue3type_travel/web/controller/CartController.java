@@ -1,6 +1,8 @@
 package com.vue3type_travel.web.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -96,7 +98,13 @@ public class CartController {
 			newCart.setBaby_num(Integer.parseInt(param.get("babyNum")));
 			newCart.setDate_from(param.get("date_from"));
 			newCart.setDate_to(param.get("date_to"));
-			newCart.setDate_cart_put(param.get("date_cart_put"));
+			Date date = new Date();
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss zzz");
+			// date.toString();
+			// 2022-11-05 21:53:04 KST
+			// System.out.println("date.toString(); : " + date.toString());
+			System.out.println("df.format(date); : " + df.format(date));
+			newCart.setDate_cart_put(df.format(date));
 			
 			cartRepository.save(newCart);
 		}

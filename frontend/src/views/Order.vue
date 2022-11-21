@@ -4,7 +4,7 @@
       <main>
         <div class="py-5 text-center">
           <h2>주문하기</h2>
-          <!-- <div :class="selectedPlaceIds" /> -->
+          <!-- <div :class="selectedPlaceIds /> -->
           <p class="lead">
             Below is an example form built entirely with Bootstrap’s form
             controls. Each required form group has a validation state that can
@@ -30,11 +30,18 @@
                   <h6 class="my-0">{{ i.name }}</h6>
                 </div>
                 <span class="text-muted">
+                  {{ lib.getNumberFormatted(i.total_price) }}원
+                </span>
+                <span class="text-muted">
+                  {{ i.date_from }} &nbsp;~&nbsp; {{ i.date_to }} ({{
+                    Number(i.date_to.substring(8, 10)) -
+                    Number(i.date_from.substring(8, 10))
+                  }}박
                   {{
-                    lib.getNumberFormatted(
-                      i.price - (i.price * i.discountPer) / 100
-                    )
-                  }}원
+                    Number(i.date_to.substring(8, 10)) -
+                    Number(i.date_from.substring(8, 10)) +
+                    1
+                  }}일)
                 </span>
               </li>
             </ul>
