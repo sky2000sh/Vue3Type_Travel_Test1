@@ -4,7 +4,7 @@
       <main>
         <div class="py-5 text-center">
           <h2>주문하기</h2>
-          <!-- <div :class="selectedPlaceIds" /> -->
+          <!-- <div :class="selectedPlaceIds /> -->
           <p class="lead">
             Below is an example form built entirely with Bootstrap’s form
             controls. Each required form group has a validation state that can
