@@ -210,7 +210,7 @@ export default {
   },
 
   mounted() {
-    // console.log("mounted의 query :", this.$route.query);
+    // console.log("mounted의 query :, this.$route.query);
     // const sendingData = this.$route.query;
     // console.log("mounted의 sendingData :", sendingData);
   },
