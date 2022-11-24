@@ -212,7 +212,7 @@ export default {
   mounted() {
     // console.log("mounted의 query :", this.$route.query);
     // const sendingData = this.$route.query;
-    // console.log("mounted의 sendingData :", sendingData);
+    // console.log("mounted의 sendingData :, sendingData);
   },
 
   // setup()함수를 지우고 옛날 것으로 치환하기
