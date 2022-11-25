@@ -215,7 +215,7 @@ export default {
     // console.log("mounted의 sendingData :", sendingData);
   },
 
-  // setup()함수를 지우고 옛날 것으로 치환하기
+  // setup()함수를 지우고 옛날 것으로 치환하
   setup() {
     // state부분은 data() 부분으로 갖다 넣기
     const state = reactive({
