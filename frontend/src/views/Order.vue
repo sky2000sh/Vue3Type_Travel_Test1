@@ -180,7 +180,7 @@
 <script>
 import axios from "axios";
 import lib from "@/variousScript/lib";
-// import router from "@/router"
+// import router from "@/router";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
