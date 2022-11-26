@@ -17,13 +17,13 @@
             <h4 class="d-flex justify-content-between align-items-center mb-3">
               <span class="text-primary"> 구입 목록 </span>
               <span class="badge bg-primary rounded-pill">
-                총 {{ state.items.length }}개
+                총 {{ this.items.length }}개
               </span>
             </h4>
             <ul class="list-group mb-3">
               <li
                 class="list-group-item d-flex justify-content-between lh-sm"
-                v-for="(i, idx) in state.items"
+                v-for="(i, idx) in this.items"
                 :key="idx"
               >
                 <div>
@@ -60,7 +60,7 @@
                     type="text"
                     class="form-control"
                     id="username"
-                    v-model="state.form.name"
+                    v-model="form.name"
                   />
                   <div class="invalid-feedback">Your username is required.</div>
                 </div>
@@ -71,7 +71,7 @@
                     type="text"
                     class="form-control"
                     id="address"
-                    v-model="state.form.address"
+                    v-model="form.address"
                   />
                   <div class="invalid-feedback">
                     Please enter your shipping address.
@@ -90,7 +90,7 @@
                     type="radio"
                     class="form-check-input"
                     value="credit"
-                    v-model="state.form.payment"
+                    v-model="form.payment"
                   />
                   <label class="form-check-label" for="credit">
                     신용카드
@@ -103,7 +103,7 @@
                     type="radio"
                     class="form-check-input"
                     value="debit"
-                    v-model="state.form.payment"
+                    v-model="form.payment"
                   />
                   <label class="form-check-label" for="debit">
                     직불(체크)카드</label
@@ -116,7 +116,7 @@
                     type="radio"
                     class="form-check-input"
                     value="sendwoaccount"
-                    v-model="state.form.payment"
+                    v-model="form.payment"
                   />
                   <label class="form-check-label" for="sendwoaccount"
                     >무통장입금</label
@@ -129,7 +129,7 @@
                     type="radio"
                     class="form-check-input"
                     value="paypal"
-                    v-model="state.form.payment"
+                    v-model="form.payment"
                   />
                   <label class="form-check-label" for="paypal">PayPal</label>
                 </div>
@@ -142,7 +142,7 @@
                     type="text"
                     class="form-control"
                     id="cc-name"
-                    v-model="state.form.cardNumber"
+                    v-model="form.cardNumber"
                   />
                   <div class="invalid-feedback">Name on card is required</div>
                 </div>
@@ -178,10 +178,9 @@
 </template>
 
 <script>
-import { computed, reactive } from "@vue/reactivity";
 import axios from "axios";
 import lib from "@/variousScript/lib";
-import router from "@/router";
+// import router from "@/router"
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -196,30 +195,6 @@ export default {
 
   data() {
     return {
-      selectedPlaceIds: "",
-    };
-  },
-
-  created() {
-    console.log("created this.route :", this.$route);
-    console.log("created query :", this.$route.query);
-    const sendingData = this.$route.query;
-    console.log("created sendingData :", sendingData);
-
-    this.fnSelectedPlace(sendingData);
-  },
-
-  mounted() {
-    // console.log("mounted의 query :", this.$route.query);
-    // const sendingData = this.$route.query;
-    // console.log("mounted의 sendingData :", sendingData);
-  },
-
-  // setup()함수를 지우고 옛날 것으로 치환하기
-  setup() {
-    // state부분은 data() 부분으로 갖다 넣기
-    const state = reactive({
-      items: [],
       form: {
         name: "",
         address: "",
@@ -227,62 +202,65 @@ export default {
         cardNumber: "",
         places: "",
       },
-    });
-
-    // load는 method에 가져온 데이터를 mounted에 뿌리기
-    const load = () => {
-      axios.get("/api/cart/places").then(({ data }) => {
-        console.log("여기가 Cart.vue 의 data :", data);
-        state.items = data;
-      });
+      items: [],
+      selectedPlaceIds: "",
     };
+  },
 
-    // 결제하기 버튼 누를 때
-    const submit = () => {
-      let places = "";
+  computed: {
+    lib() {
+      return lib;
+    },
 
-      axios.get("/api/cart/places").then(({ data }) => {
-        state.items = data;
-      });
-
-      for (let i = 0; i < state.items.length; i++) {
-        places += state.items[i].name + ", ";
-        state.form.places = places.replace(/,\s*$/, "");
-      }
-
-      const args = JSON.parse(JSON.stringify(state.form));
-      args.items = JSON.stringify(state.items);
-
-      axios.post("/api/orders", args).then(() => {
-        console.log("여기가 Order.vue 의 args", args);
-        alert("주문 완료했습니다.");
-
-        // 후에 나의 구입목록으로 들어가기
-        router.push({ path: "/" });
-      });
-    };
-
-    // computed: {}를 활용해서 lib 가져오기 + computedPrice도 계산해서 놓거나, mounted에 넣기
-    const computedPrice = computed(() => {
+    computedPrice() {
       let result = 0;
-
-      for (let i of state.items) {
-        result += i.price - (i.price * i.discountPer) / 100;
+      for (let i of this.items) {
+        result += i.total_price;
       }
-
       return result;
+    },
+  },
+
+  created() {
+    //this.fnSelectedPlace(sendingData);
+
+    const sendingData = this.$route.query;
+    //console.log("created sendingData :", sendingData);
+
+    axios.post("/api/cart/placesForOrder", sendingData).then(({ data }) => {
+      this.items = data;
+      //console.log("created의 this.items :", this.items);
     });
-
-    load();
-
-    return { state, lib, submit, computedPrice };
   },
 
   methods: {
-    fnSelectedPlace(value) {
-      axios.post("/api/cart/placesForOrder", value).then(({ data }) => {
-        console.log("여기가 order 페이지의 최종 주문 result :", data);
-      });
+    // fnSelectedPlace(value) {
+    //   axios.post("/api/cart/placesForOrder", value).then(({ data }) => {
+    //     console.log("여기가 order 페이지의 최종 주문 result :", data);
+    //     this.items = data;
+    //   });
+    // },
+
+    // 결제하기 버튼 누를 때
+    submit() {
+      let places = "";
+
+      for (let i = 0; i < this.items.length; i++) {
+        places += this.items[i].name + ", ";
+        this.form.places = places.replace(/,\s*$/, "");
+      }
+
+      const args = JSON.parse(JSON.stringify(this.form));
+      //args.items = JSON.stringify(this.items);
+      args.items = this.items;
+
+      // axios.post("/api/orders", args).then(() => {
+      //   console.log("여기가 Order.vue 의 args", args);
+      //   alert("주문 완료했습니다.");
+
+      //   // 후에 나의 구입목록으로 들어가기
+      //   router.push({ path: "/" });
+      // });
     },
   },
 };
