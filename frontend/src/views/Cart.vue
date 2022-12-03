@@ -4,7 +4,9 @@
       <table>
         <tr class="getTh">
           <!-- <label for="chk"> -->
-          <th><input type="checkbox" /></th>
+          <th>
+            <input type="checkbox" @click="checkedAll($event.target.checked)" />
+          </th>
           <th>이미지</th>
           <th>이름</th>
           <th>정보</th>
@@ -15,19 +17,14 @@
           <!-- </label> -->
           <th></th>
         </tr>
-        <tr v-if="state.items.length === 0" class="cart_length_0">
+        <tr v-if="this.items.length === 0" class="cart_length_0">
           <td>장바구니에 담은 상품이 없습니다.</td>
         </tr>
-        <tr v-else v-for="(i, idx) in state.items" :key="idx">
+        <tr v-else v-for="(i, idx) in this.items" :key="idx">
           <slot name="aaa">
             <!-- <label for="chk"> -->
             <td>
-              <input
-                type="checkbox"
-                v-model="selectedPlaceIds"
-                :value="i.id"
-                @change="getCheckboxValue"
-              />
+              <input type="checkbox" v-model="selectedPlaceIds" :value="i.id" />
               <!-- true-value="Y"
                 false-value="N" -->
               <!-- id="chk" -->
@@ -70,7 +67,7 @@
       </table>
       <br />
       <button
-        v-if="state.items.length !== 0"
+        v-if="this.items.length !== 0"
         class="btn btn-primary"
         @click="onClickOrderSet"
       >
@@ -81,7 +78,6 @@
 </template>
 
 <script>
-import { reactive } from "vue";
 import axios from "axios";
 import router from "@/router";
 // import store from "@/store/index";
@@ -93,39 +89,46 @@ export default {
 
   data() {
     return {
-      items: Object,
+      //items: Object,
       img_Path: String,
 
+      items: {
+        type: Object,
+      },
+
+      allChecked: false,
       selectedPlaceIds: [],
     };
   },
 
-  setup() {
-    const state = reactive({
-      items: {
-        type: Object,
-      },
+  computed: {
+    lib() {
+      return lib;
+    },
+  },
+
+  created() {
+    axios.get("/api/cart/places").then(({ data }) => {
+      console.log("여기가 Cart.vue 의 created data :", data);
+      this.items = data;
     });
-
-    const load = () => {
-      axios.get("/api/cart/places").then(({ data }) => {
-        console.log("여기가 Cart.vue 의 data :", data);
-        state.items = data;
-      });
-    };
-
-    const remove = (placeId) => {
-      axios.delete(`/api/cart/places/${placeId}`).then(() => {
-        load();
-      });
-    };
-
-    load();
-
-    return { state, lib, remove };
   },
 
   methods: {
+    checkedAll(checked) {
+      this.allChecked = checked;
+      console.log("checkedAll의 allChecked :", this.allChecked);
+
+      console.log("checkedAll의 selectedPlaceIds :", this.selectedPlaceIds);
+
+      let placeId = [];
+      for (let i in this.items) {
+        placeId.push(this.items[i].id);
+        //this.selectedPlaceIds = placeId;
+        console.log("checkedAll의 for문 placeId :", placeId);
+      }
+    },
+
     onClickOrderSet() {
       /* selectedPlaceIds[i] = placeId = 1번이고,
         back에서 불러온 하나의 리스트씩 들어있는 id(= placeId)가 그 1번이면
@@ -148,6 +151,12 @@ export default {
           params: this.selectedPlaceIds,
         });
       }
+    },
+
+    remove(placeId) {
+      axios.delete(`/api/cart/places/${placeId}`).then(() => {
+        this.created();
+      });
     },
   },
 };

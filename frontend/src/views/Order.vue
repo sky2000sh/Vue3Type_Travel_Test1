@@ -225,7 +225,7 @@ export default {
     //this.fnSelectedPlace(sendingData);
 
     const sendingData = this.$route.query;
-    //console.log("created sendingData :", sendingData);
+    console.log("created sendingData :", sendingData);
 
     axios.post("/api/cart/placesForOrder", sendingData).then(({ data }) => {
       this.items = data;
@@ -237,7 +237,7 @@ export default {
     // fnSelectedPlace(value) {
     //   axios.post("/api/cart/placesForOrder", value).then(({ data }) => {
     //     console.log("여기가 order 페이지의 최종 주문 result :", data);
-    //     this.items = data;
+    //     this.items = data
     //   });
     // },
 
