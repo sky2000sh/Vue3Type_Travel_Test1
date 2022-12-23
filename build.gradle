@@ -40,6 +40,8 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+	// 22.12.10일 새롭게 설치한 dependencies 내용
+	implementation group: 'com.auth0', name: 'java-jwt', version: '3.19.2'
 	
 	// 22.11.12일 새롭게 설치한 dependencies 내용
 	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
