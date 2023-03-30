@@ -237,7 +237,7 @@ export default {
     // fnSelectedPlace(value) {
     //   axios.post("/api/cart/placesForOrder", value).then(({ data }) => {
     //     console.log("여기가 order 페이지의 최종 주문 result :", data);
-    //     this.items = dataㅇ
+    //     this.items = data;
     //   });
     // },
 
